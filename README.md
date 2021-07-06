@@ -3,7 +3,7 @@ binance-api-wrapper
 
 To get started 
 
-1. Download and place this folder in your MATLAB directory then add this folder and all its subfolders to the user path. 
+1. Download and place this folder in your MATLAB directory then add it (and all its subfolders) to the user path. 
 
 2. Copy your public and private keys into the getkeys function (subfunctions/getkeys.m).
 
