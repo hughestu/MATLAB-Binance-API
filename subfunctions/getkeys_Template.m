@@ -1,4 +1,4 @@
-function [akey,skey] = getkeys(accountName)
+function [akey,skey] = getkeys_Template(accountName)
 % Use this make the getkeys function.
 %
 % Instructions:
