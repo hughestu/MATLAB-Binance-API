@@ -30,7 +30,6 @@ classdef Order < handle & matlab.mixin.SetGet
             s = obj2struct(obj);
             
             % Setup URL
-            baseURL = 'https://api.binance.com';
             requestMethod = 'POST';
             
             % Get keys
@@ -44,7 +43,7 @@ classdef Order < handle & matlab.mixin.SetGet
             % Generate Signature and append to queryString
             queryString = appendSignature(queryString,skey);
             
-            URL = [baseURL obj.endPoint]; % (params in the requestBody)
+            URL = [getBaseURL obj.endPoint]; % (params in the requestBody)
             
             % Format and send API request
             request = http.RequestMessage(requestMethod,binanceHeader(akey),...

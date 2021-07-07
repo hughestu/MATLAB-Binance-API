@@ -24,7 +24,8 @@ assert(ismember(OPT.limit,[5 10 20 50 100 500 1000 5000]), ...
 OPT.symbol = upper(symbol);
 QP = matlab.net.QueryParameter(OPT);
 
-s = webread(['https://api.binance.com/api/v3/depth?' QP.char]);
+
+s = webread([getBaseURL '/api/v3/depth?' QP.char]);
 
 % convert to table
 C = cellfun(@(x,y) [str2double(x).' str2double(y).'],s.bids,s.asks,...

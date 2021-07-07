@@ -27,8 +27,7 @@ if isfield(OPT,'endTime')
     end
 end
 
-% baseURL and endPoint
-baseURL = 'https://api.binance.com';
+% endPoint
 endPoint = '/api/v3/aggTrades';
 requestMethod = 'GET';
 
@@ -39,7 +38,7 @@ OPT.symbol = symbol;
 QP = QueryParameter(OPT);
 queryString = QP.char;
 
-URL = [baseURL endPoint '?' queryString];
+URL = [getBaseURL endPoint '?' queryString];
 
 request = http.RequestMessage(requestMethod);
 s = request.send(URL);

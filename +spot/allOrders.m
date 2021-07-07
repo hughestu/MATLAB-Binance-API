@@ -83,7 +83,7 @@ OPT.timestamp = pub.getServerTime();
 [akey,skey] = getkeys(OPT.accountName); OPT = rmfield(OPT,'accountName');
 OPT.symbol = symbol;
 
-burl = 'https://api.binance.com';
+
 endPoint = '/api/v3/allOrders';
 requestMethod = 'GET';
 

@@ -6,26 +6,25 @@ function p = price(varargin)
 %
 % pub.price() returns symbol and price for all markets.
 
-baseURL = 'https://api.binance.com';
+assert(nargin<2,sprintf(...
+    'Expected 0 or 1 input arguments. Instead there were %d.',nargin))
+
 endPoint = '/api/v3/ticker/price';
 
-if nargin == 1
+if nargin == 0
+    
+    p = webread([getBaseURL endPoint]);
+
+else
     
     symbol = varargin{1};
     validateattributes(symbol,{'char'},{'row'})
+    
     s.symbol = upper(symbol);
     
     QP = matlab.net.QueryParameter(s);
     queryString = QP.char;
     
-    p = webread([baseURL endPoint '?' queryString]);
-    
-elseif nargin == 0
-    
-    p = webread([baseURL endPoint]);
-    
-else
-    
-    error('Expected 0 or 1 input arguments. Instead there were %d.',nargin)
-    
+    p = webread([getBaseURL endPoint '?' queryString]);    
+ 
 end

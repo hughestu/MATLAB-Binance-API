@@ -10,17 +10,21 @@ function s = bookTicker(varargin)
 % Example:
 %   >>  s = pub.bookTicker('BTCUSDT')
 
-baseURL = 'https://api.binance.com';
 endPoint = '/api/v3/ticker/bookTicker';
 
 if nargin==1
+    
     validateattributes(varargin{1},{'char'},{'row'})
     OPT.symbol = upper(varargin{1});
+    
     QP = matlab.net.QueryParameter(OPT);
     queryString = QP.char;
-    s = webread([baseURL endPoint '?' queryString]);
+    
+    s = webread([getBaseURL endPoint '?' queryString]);
+    
 else
-    s = webread([baseURL endPoint]);
+    
+    s = webread([getBaseURL endPoint]);
 end
 
 

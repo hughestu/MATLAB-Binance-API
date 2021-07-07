@@ -11,24 +11,25 @@ function s = exchangeInfo(varargin)
 %
 % s = pub.exchangeInfo() returns info on all symbols.
 
+endPoint = '/api/v3/exchangeInfo';
+
+assert(nargin<2,sprintf(...
+    'Expected 0 or 1 input arguments. Instead there were %d.',nargin))
 
 if nargin == 0
-    s = webread('https://api.binance.com/api/v3/exchangeInfo');
     
-elseif nargin == 1
+    s = webread([getBaseURL endPoint]);
+    
+else
     
     validateattributes(varargin{1},{'char','cell'},{'row'})
     symbol = upper(varargin{1});
     
-    if isa(symbol,'char')
-        s = webread([...
-            'https://api.binance.com/api/v3/exchangeInfo?symbol=' symbol]);
-    else
+    if isa(symbol,'cell')
         symbol = jsonencode(symbol);
-        s = webread([...
-            'https://api.binance.com/api/v3/exchangeInfo?symbols=' symbol]);
-    end
-        
-else
-    error('Expected 0 or 1 input arguments. Instead there were %d.',nargin)
+        s = webread([getBaseURL endPoint '?symbols=' symbol]);
+    else
+        s = webread([getBaseURL endPoint '?symbol=' symbol]);
+    end 
+
 end

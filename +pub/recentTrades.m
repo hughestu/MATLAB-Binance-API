@@ -21,8 +21,7 @@ end
 OPT.symbol = upper(symbol);
 QP = matlab.net.QueryParameter(OPT);
 
-s = webread(['https://binance.com/api/v3/trades?' QP.char]);
-
+s = webread([getBaseURL '/api/v3/trades?' QP.char]);
 
 T = struct2table(s);
 T.price = str2double(T.price);

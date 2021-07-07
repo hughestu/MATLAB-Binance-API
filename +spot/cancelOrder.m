@@ -45,7 +45,6 @@ OPT.timestamp = pub.getServerTime();
 assert(isfield(OPT,'orderId') || isfield(OPT,'origClientOrderId'),...
     'Must specify either an orderId or origClientOrderId')
 
-burl = 'https://api.binance.com';
 endPoint = '/api/v3/order';
 requestMethod = 'DELETE';
 
@@ -55,7 +54,7 @@ queryString = QP.char;
 queryString = appendSignature(queryString,skey);
 
 request = http.RequestMessage(requestMethod,binanceHeader(akey));
-URL = [burl endPoint '?' queryString];
+URL = [getBaseURL endPoint '?' queryString];
 response = request.send(URL);
 manageErrors(response)
 

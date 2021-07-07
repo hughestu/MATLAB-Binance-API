@@ -22,11 +22,14 @@ end
 
 import matlab.net.*
 
+assert(nargin<2,sprintf(...
+    'Expected 0 or 1 input arguments. Instead there were %d.',nargin))
+
 if nargin == 1
+    
     validateattributes(varargin{1},{'char'},{'row'})
     OPT.symbol = upper(varargin{1});
-elseif nargin >= 2
-    error('Expected 0-1 positional input arguments but there were %d.',nargin)
+    
 end
 
 OPT.timestamp = pub.getServerTime();
@@ -35,7 +38,6 @@ OPT.timestamp = pub.getServerTime();
 accountName = OPT.accountName;
 OPT = rmfield(OPT,'accountName');
 
-burl = 'https://api.binance.com';
 endPoint = '/api/v3/openOrders';
 requestMethod = 'GET';
 
@@ -48,7 +50,9 @@ URL = [burl endPoint '?' queryString];
 response = request.send(URL);
 manageErrors(response)
 
+
 if isempty(response.Body.Data)
+    
     if isfield(OPT,'symbol')
         fprintf(['\n\nNo active orders exist for <strong>%s</strong> on'...
             ' the <strong>%s</strong> account!\n'],OPT.symbol,accountName)
@@ -56,11 +60,14 @@ if isempty(response.Body.Data)
         fprintf(['\n\n There are no open orders on the '...
             '<strong>%s</strong> account!\n'],accountName)
     end
+    
     s = [];
+    
 else
+    
     s = struct2table(response.Body.Data);
+    
 end
 
-end
 
 

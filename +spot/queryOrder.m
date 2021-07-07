@@ -40,7 +40,7 @@ import matlab.net.*
 symbol = upper(symbol);
 
 [akey,skey]=getkeys(OPT.accountName); OPT = rmfield(OPT,'accountName');
-baseURL = 'https://api.binance.com';
+
 requestMethod = 'GET';
 endPoint = '/api/v3/order';
 
@@ -62,7 +62,7 @@ queryString = QP.char;
 
 % appendSignature
 queryString = appendSignature(queryString,skey);
-URL = [baseURL endPoint '?' queryString];
+URL = [getBaseURL endPoint '?' queryString];
 
 % Make API Request
 request = http.RequestMessage(requestMethod,binanceHeader(akey));

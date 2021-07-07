@@ -25,7 +25,6 @@ OPT.symbol = upper(symbol);
 
 akey =  getkeys();
 
-burl = 'https://api.binance.com';
 endPoint = '/api/v3/historicalTrades';
 requestMethod = 'GET';
 
@@ -33,7 +32,7 @@ QP = QueryParameter(OPT);
 queryString = QP.char;
 
 request = http.RequestMessage(requestMethod,binanceHeader(akey));
-URL = [burl endPoint '?' queryString];
+URL = [getBaseURL endPoint '?' queryString];
 response = request.send(URL);
 manageErrors(response)
 
@@ -44,5 +43,4 @@ T.price = str2double(T.price);
 T.qty = str2double(T.qty);
 T.quoteQty = str2double(T.quoteQty);
 
-end
 

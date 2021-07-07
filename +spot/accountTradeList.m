@@ -69,8 +69,7 @@ if isfield(OPT,'endTime')
     end
 end
 
-% baseURL and endPoint
-baseURL = 'https://api.binance.com';
+% endPoint
 requestMethod = 'GET';
 endPoint = '/api/v3/myTrades';
 
