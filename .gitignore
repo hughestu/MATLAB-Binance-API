@@ -1,1 +1,7 @@
 # List of untracked files to ignore
+
+# Windows default autosave extension
+*.asv
+
+# User Specific Folder
+userSpecific/
