@@ -1,21 +1,20 @@
 [![View MATLAB-Binance-API on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://uk.mathworks.com/matlabcentral/fileexchange/95558-matlab-binance-api)
 
 # MATLAB Binance API
-
-Suite of functions for accessing the [Binance API](https://binance-docs.github.io/apidocs/spot/en/#introduction) via MATLAB (R2016b or later). This package supports all endpoints for trading on spot accounts as well as most public endpoints. Future releases will support trading on margin accounts (v0.1.0) and using websockets (v0.2.0).
+Suite of functions for accessing the [Binance API](https://binance-docs.github.io/apidocs/spot/en/#introduction) via MATLAB (R2016b or later). This package supports all endpoints for trading on spot accounts as well as most public endpoints. Future releases will support trading on margin accounts (v0.1.0) and using WebSockets (v0.2.0).
 
 #### To get started 
 
-1. Download and place this folder in your MATLAB directory then add it (and all its subfolders) to the user path. 
+1.	Download and place this folder in your MATLAB directory, then add it (and all its subfolders) to the user path. 
 
-2. Make your keys accessible with a function called getkeys.m on the userpath: to do this, you can copy your public and private keys into getkeys_Template.m which is located at .../MATLAB-Binance-API/subfunctions/getkeys_Template.m, and then rename it as getkeys.m. You can call `spot.accountInfo` to confirm that the authentication is working.
+2.  Make your public and private keys accessible via `[pubKey,secKey] = getkeys(accountName)` as follows: (i) copy your public and private keys into getkeys_Template.m (see: MATLAB-Binance-API/subfunctions/getkeys_Template.m); (ii) rename getkeys_Template.m to getkeys.m.
 
-3. From there I recommend generating a list of functions in the toolboxes by calling `help spot` and/or `help pub`. This gives you one line description of what each function does and links to further information for each function.
+3.  Verify that the authentication works correcty. You can do this by calling `[~,~,response] = spot.accountInfo` and then checking that the response contains an HTTP status code of 200.
 
-4. The package was created and tested using api.binance.com. For different URL's, such as api.binance.us, you can modify subfunctions/getBaseURL.m accordingly. Note, I haven't been able to test api.binance.us but as far as I can tell the endpoints are cross compatibile (feedback from anyone using .us would be appreciated).
+4.	At this point, I recommend generating a list of functions contained in the toolboxes by calling `help spot` and `help pub`. This gives you a one-line description of what each function does and links to further information for each function.
 
-Each function in the spot and public (pub) toolboxes contain atleast one example that shows how to call it, for example see: 
+5.	For different URL's, such as api.binance.us, you can modify subfunctions/getBaseURL.m as required. Note, I haven't been able to test api.binance.us but as far as I can tell, the endpoints are cross-compatible (feedback from anyone using .us would be appreciated).
 
-`help spot.newOrder`
+All user functions are scoped to either pub.* (for the public endpoints) or spot.* (for the spot account endpoints). The functions' help documentation (e.g. `help spot.newOrder`) provide further info and, in all cases, at least one example showing how to use that function.
 
-All user functions are scoped to either pub.\* (for the public endpoints) or to spot.\* (for the spot account endpoints), e.g. the price functions in the public toolbox is called by `pub.price('btcusdt')`.
+If you've benefited from the code, please consider leaving a review/rating on my [FEX Submission](https://uk.mathworks.com/matlabcentral/fileexchange/95558-matlab-binance-api).
