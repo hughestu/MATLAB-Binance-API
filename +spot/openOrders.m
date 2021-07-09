@@ -1,4 +1,4 @@
-function s = openOrders(varargin,OPT)
+function [s] = openOrders(varargin,OPT)
 % openOrders returns all open orders on a symbol.
 %
 % spot.openOrders() returns all open orders on the default spot account.

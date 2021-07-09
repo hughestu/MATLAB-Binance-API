@@ -9,5 +9,7 @@ function baseURL = getBaseURL()
 %    https://api.binance.us
 
 baseURL = 'https://api.binance.com';
+
+%baseURL = 'https://api.binance.us'
 end
 

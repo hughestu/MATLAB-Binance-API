@@ -4,18 +4,18 @@ function [s] = cancelAllOrders(varargin, OPT)
 % spot.cancelAllOrders(symbol) cancels all open orders on your account for
 % a given symbol, where symbol is a type char row vector.
 %
-% spot.cancelAllOrders() cancels all open orders. This involves one cancel
-% order request per symbol (there are no endpoints/options to cancel every
-% order with a single api request so this alternative uses the
-% cancelAllOrders endpoint once for each symbol).
+% spot.cancelAllOrders() cancels all open orders. This requires atleast 
+% one cancel order request per symbol ( there are no endpoints to 
+% cancel every order using a single api request, so spot.cancelAllOrders()
+% iterates through each symbol via spot.cancelAllOrder(symbol) ).
 %
 % Optional name-value pair arguments:
 %   recvWindow      - request timeout window (default 5000ms, max 60000ms)
 %   accountName     - specify which account to use (otherwise this uses the
 %                     "default" account)
 %
-%   EXAMPLE:
-%   cancelAllOrders('BTCUSDT')
+%   Example:
+%   cancelAllOrders('btcusdt')
 
 
 arguments (Repeating)

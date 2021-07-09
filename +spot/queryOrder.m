@@ -1,14 +1,15 @@
 function [s] = queryOrder(symbol,OPT)
 % queryOrder querys an order's status.
 %
-% queryOrder(symbol,___) returns the status for any order (open or filled)
-% given the symbol and either the orderId or origClientOrderId as input.
+% spot.queryOrder(symbol,___) returns the status for any order (open or
+% filled) given the symbol and either the orderId or origClientOrderId as 
+% input.
 %
-% queryOrder(symbol,'origId',origId) uses the original order id assigned by
-% the Binance server.
+% spot.queryOrder(symbol,'origId',origId) uses the original order id 
+% assigned by the Binance server.
 %
-% queryOrder(symbol,'origClientOrderId',val) uses the order id provided by
-% the client in the original order request.
+% spot.queryOrder(symbol,'origClientOrderId',val) uses the order id 
+% provided by the client in the original order request.
 %
 % Additional name-value pair arguments:
 %   recvWindow      - request timeout window (default 5000ms, max 60000ms)
