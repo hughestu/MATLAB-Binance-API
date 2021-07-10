@@ -3,7 +3,7 @@
 # MATLAB Binance API
 Suite of functions for accessing the [Binance API](https://binance-docs.github.io/apidocs/spot/en/#introduction) via MATLAB (R2016b or later). This package supports all endpoints for trading on spot accounts as well as most public endpoints. Future releases will support trading on margin accounts (v0.1.0) and using WebSockets (v0.2.0).
 
-#### To get started 
+### To get started 
 
 1.	Download and place this folder in your MATLAB directory, then add it (and all its subfolders) to the user path. 
 
@@ -17,4 +17,45 @@ Suite of functions for accessing the [Binance API](https://binance-docs.github.i
 
 All user functions are scoped to either pub.* (for the public endpoints) or spot.* (for the spot account endpoints). The functions' help documentation (e.g. `help spot.newOrder`) provide further info and, in all cases, at least one example showing how to use that function.
 
+
+### List of functions
+#### Public
+pub.aggTrades - returns public trade data for a specific symbol.  
+
+pub.bookDepth - returns up to 5000 bid/ask prices and quantities for a symbol.  
+
+pub.bookTicker - returns the best bid/ask price & qty for a symbol or symbols.  
+
+pub.exchangeInfo - returns info about each symbol (permissions, filters, etc.).  
+
+pub.getServerTime - returns the current Binance server timestamp.  
+
+pub.historicalTrades - returns older market trades (up to 1000 per request).  
+
+pub.price - returns the latest price for a symbol or symbols.  
+
+pub.recentTrades - returns a list of recent trades for a specific symbol.  
+
+#### Spot
+
+spot.accountInfo - returns the portfolio for a given account.  
+
+spot.accountTradeList - returns your trades for a specific account and symbol.  
+
+spot.allOrders - returns (open/filled) orders for a specific account and symbol.  
+
+spot.cancelAllOrders - cancels all active orders on a symbol including OCO's.  
+
+spot.cancelOrder - cancels an active order given a symbol and order id.  
+
+spot.newOrder - creates an object for making orders of a given orderType (market, limit, stop-loss-limit, etc.).  
+
+spot.openOrders - returns all open orders on a symbol.  
+
+spot.queryOrder - querys an order's status.  
+
+
+### Feedback
+
 If you've benefited from the code, please consider leaving a review/rating on my [FEX Submission](https://uk.mathworks.com/matlabcentral/fileexchange/95558-matlab-binance-api).
+    
