@@ -9,7 +9,7 @@ Suite of functions for accessing the [Binance API](https://binance-docs.github.i
 
 2.  Make your public and private keys accessible via `[pubKey,secKey] = getkeys(accountName)` as follows: (i) copy your public and private keys into getkeys_Template.m (see: MATLAB-Binance-API/subfunctions/getkeys_Template.m); (ii) rename getkeys_Template.m to getkeys.m.
 
-3.  Verify that the authentication works correcty. You can do this by calling `[~,~,response] = spot.accountInfo` and then checking that the response contains an HTTP status code of 200.
+3.  Verify that the authentication works correctly. You can do this by calling `[~,~,response] = spot.accountInfo` and then checking that the response contains an HTTP status code of 200.
 
 4.	At this point, I recommend generating a list of functions contained in the toolboxes by calling `help spot` and `help pub`. This gives you a one-line description of what each function does and links to further information for each function.
 
