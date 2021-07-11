@@ -81,7 +81,7 @@ queryString = [QP.char '&timestamp=' pub.getServerTime()];
 
 % Append signature
 queryString = appendSignature(queryString,skey);
-URL = [baseURL endPoint '?' queryString];
+URL = [getBaseURL endPoint '?' queryString];
 
 request = http.RequestMessage(requestMethod,binanceHeader(akey));
 response = request.send(URL);

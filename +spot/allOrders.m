@@ -92,7 +92,7 @@ queryString = QP.char;
 queryString = appendSignature(queryString,skey);
 
 request = http.RequestMessage(requestMethod,binanceHeader(akey));
-URL = [burl endPoint '?' queryString];
+URL = [getBaseURL endPoint '?' queryString];
 response = request.send(URL);
 manageErrors(response)
 

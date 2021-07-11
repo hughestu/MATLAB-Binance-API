@@ -2,7 +2,7 @@ function p = price(varargin)
 % price returns the latest price for a symbol or symbols.
 %
 % pub.price(symbol) returns symbol and price
-%       e.g. >> public.price('btcusdt')
+%       e.g. >> pub.price('btcusdt')
 %
 % pub.price() returns symbol and price for all markets.
 
