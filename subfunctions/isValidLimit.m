@@ -8,8 +8,8 @@ if isa(limit,'char') || isa(limit,'string')
 end
 
 try
-assert(limit<1000 && limit>1,...
+assert(limit<=1000 && limit>=1,...
     'Expected input "limit" to be in the range 1 to 1000')
 catch ME
-    rethrowAsCaller(ME)
+    rethrow(ME)
 end
