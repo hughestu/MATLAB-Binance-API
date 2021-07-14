@@ -26,31 +26,8 @@ classdef Order < handle & matlab.mixin.SetGet
         
         function varargout = send(obj)
            
-            import matlab.net.*
             s = obj2struct(obj);
-            
-            % Setup URL
-            requestMethod = 'POST';
-            
-            % Get keys
-            [akey,skey] = getkeys(obj.accountName);
-            
-            % Format the queryString
-            s.timestamp = pub.getServerTime();
-            QP = QueryParameter(s);
-            queryString = QP.char;
-            
-            % Generate Signature and append to queryString
-            queryString = appendSignature(queryString,skey);
-            
-            URL = [getBaseURL obj.endPoint]; % (params in the requestBody)
-            
-            % Format and send API request
-            request = http.RequestMessage(requestMethod,binanceHeader(akey),...
-                QueryParameter(queryString));
-            
-            response = request.send(URL); % send
-            manageErrors(response,s)
+            response = sendRequest(s,obj.endPoint,'POST');
             
             if nargout ==0
                 disp([ 'Status: ' ...
@@ -60,6 +37,7 @@ classdef Order < handle & matlab.mixin.SetGet
             elseif nargout == 2
                 varargout = {response.Body.Data,response};
             end
+            
         end
         
     end
@@ -123,7 +101,7 @@ classdef Order < handle & matlab.mixin.SetGet
             
             idel = ismember(f,...
                 {...    % not a query parameter
-                'isTest','isQuoteOrderQty','accountName','endPoint',...
+                'isTest','isQuoteOrderQty','endPoint',...
                 ...     % indirect (newOrder params)
                 'orderType','quantity','price','stopPrice','icebergQty',...
                 ...     % indirect (OCO params)

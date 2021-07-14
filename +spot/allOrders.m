@@ -41,15 +41,14 @@ function s = allOrders(symbol,OPT)
 arguments
     symbol (1,:) char
     OPT.orderId (1,:) double
-    OPT.startTime (1,1) {isValidTime(OPT.startTime)}
-    OPT.endTime (1,1) {isValidTime(OPT.endTime)}
+    OPT.startTime (1,1)
+    OPT.endTime (1,1)
     OPT.limit (1,:) {isValidLimit(OPT.limit)}
     OPT.recvWindow (1,:) {isValidrecv(OPT.recvWindow)} = 5000;
     OPT.accountName (1,:) char = 'default';
 end
 
-import matlab.net.*
-symbol = upper(symbol);
+
 
 % checks
 if isfield(OPT,'orderId')
@@ -59,12 +58,8 @@ end
 % Change startTime to posixtime format if required
 if isfield(OPT,'startTime')
     validateattributes(OPT.startTime,{'numeric','datetime'},{'scalar'})
-    if isa(OPT.startTime,'datetime')
-        warning(['To use datetimes, please specify your timezone inside'...
-            ' %s and/or remove this warning'],mfilename)
-        % select your time zone ( refer to doc('posixtime') )
-        OPT.startTime.TimeZone = 'UTC'; 
-        OPT.startTime = posixtime(OPT.startTime)*1000; 
+    if isa(OPT.startTime,'datetime')      
+        OPT = datetime2posix(OPT,'startTime');
     end
 end
 
@@ -72,33 +67,19 @@ end
 if isfield(OPT,'endTime')
     validateattributes(OPT.endTime,{'numeric','datetime'},{'scalar'})
     if isa(OPT.endTime,'datetime')
-        warning(['To use datetimes, please specify your timezone inside'...
-            ' %s and/or remove this warning'],mfilename)
-        OPT.endTime.TimeZone = 'UTC'; % similarly
-        OPT.endTime = posixtime(OPT.endTime)*1000; 
+        OPT = datetime2posix(OPT,'endTime');
     end
 end
 
-OPT.timestamp = pub.getServerTime();
-[akey,skey] = getkeys(OPT.accountName); OPT = rmfield(OPT,'accountName');
-OPT.symbol = symbol;
-
-
+OPT.symbol = upper(symbol);
 endPoint = '/api/v3/allOrders';
-requestMethod = 'GET';
-
-QP = QueryParameter(OPT);
-queryString = QP.char;
-queryString = appendSignature(queryString,skey);
-
-request = http.RequestMessage(requestMethod,binanceHeader(akey));
-URL = [getBaseURL endPoint '?' queryString];
-response = request.send(URL);
-manageErrors(response)
+response = sendRequest(OPT,endPoint,'GET');
 
 s = response.Body.Data;
 
-s = formatOrders_struct2table(s); % (I personally find this easier).
+if ~isempty(s)
+    s = formatOrders_struct2table(s); % (I personally find this easier).
+end
 
 end
 

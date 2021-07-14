@@ -48,23 +48,11 @@ else
 
 end
 
-[akey,skey] = getkeys(OPT.accountName); OPT = rmfield(OPT,'accountName');
-
 endPoint = '/api/v3/openOrders';
-requestMethod = 'DELETE';
 
 if nargin == 1
     
-    OPT.timestamp = pub.getServerTime();
-    QP = QueryParameter(OPT);
-    
-    queryString = QP.char;
-    queryString = appendSignature(queryString,skey);
-    
-    request = http.RequestMessage(requestMethod,binanceHeader(akey));
-    URL = [getBaseURL endPoint '?' queryString];
-    response = request.send(URL);
-    manageErrors(response)
+    response = sendRequest(OPT,endPoint,'DELETE');
     
     s = response.Body.Data;
     
@@ -82,19 +70,9 @@ else
     
     for ii = 1:numel(symbols)
         
-        OPT.timestamp = pub.getServerTime();
-        
         OPT.symbol = symbols{ii};
         
-        QP = QueryParameter(OPT);
-        
-        queryString = QP.char;
-        queryString = appendSignature(queryString,skey);
-        
-        request = http.RequestMessage(requestMethod,binanceHeader(akey));
-        URL = [getBaseURL endPoint '?' queryString];
-        response = request.send(URL);
-        manageErrors(response)
+        response = sendRequest(OPT,endPoint,'DELETE');
         
         s(ii,:) = {symbols{ii} response.Body.Data};
         

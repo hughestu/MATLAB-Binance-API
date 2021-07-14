@@ -17,28 +17,8 @@ arguments
     OPT.accountName (1,:) = 'default'
 end
 
-import matlab.net.*
-
-[akey,skey] = getkeys(OPT.accountName);
-OPT = rmfield(OPT,'accountName');
-
-requestMethod = 'GET';
 endPoint = '/api/v3/account';
-
-% Format the queryString
-OPT.timestamp = pub.getServerTime();
-QP = QueryParameter(OPT);
-queryString = QP.char;
-
-% Generate a Signature
-queryString = appendSignature(queryString,skey);
-URL = [getBaseURL endPoint '?' queryString];
-
-% Send API request
-request = http.RequestMessage(requestMethod,binanceHeader(akey));
-response = request.send(URL);
-manageErrors(response)
-
+response = sendRequest(OPT,endPoint,'GET');
 data = response.Body.Data;
 
 % Output Arg Formatting

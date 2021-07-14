@@ -32,33 +32,17 @@ if nargin == 1
     
 end
 
-OPT.timestamp = pub.getServerTime();
-[akey,skey] = getkeys(OPT.accountName); 
-
-accountName = OPT.accountName;
-OPT = rmfield(OPT,'accountName');
-
 endPoint = '/api/v3/openOrders';
-requestMethod = 'GET';
-
-QP = QueryParameter(OPT);
-queryString = QP.char;
-queryString = appendSignature(queryString,skey);
-
-request = http.RequestMessage(requestMethod,binanceHeader(akey));
-URL = [getBaseURL endPoint '?' queryString];
-response = request.send(URL);
-manageErrors(response)
-
+response = sendRequest(OPT,endPoint,'GET');
 
 if isempty(response.Body.Data)
     
     if isfield(OPT,'symbol')
         fprintf(['\n\nNo active orders exist for <strong>%s</strong> on'...
-            ' the <strong>%s</strong> account!\n'],OPT.symbol,accountName)
+            ' the <strong>%s</strong> account!\n'],OPT.symbol,OPT.accountName)
     else
         fprintf(['\n\n There are no open orders on the '...
-            '<strong>%s</strong> account!\n'],accountName)
+            '<strong>%s</strong> account!\n'],OPT.accountName)
     end
     
     s = [];

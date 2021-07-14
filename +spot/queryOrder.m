@@ -36,15 +36,6 @@ arguments
     OPT.accountName         (1,:) char      = 'default'
 end
 
-import matlab.net.*
-
-symbol = upper(symbol);
-
-[akey,skey]=getkeys(OPT.accountName); OPT = rmfield(OPT,'accountName');
-
-requestMethod = 'GET';
-endPoint = '/api/v3/order';
-
 idx = ismember({'orderId','origClientOrderId'},fieldnames(OPT));
 if nnz(idx)==0
     msg = 'none';
@@ -56,20 +47,8 @@ assert(xor(idx(1),idx(2)),...
     'however %s of these inputs were provided.'],msg))
 
 % Format the queryString
-OPT.symbol = symbol;
-OPT.timestamp = pub.getServerTime();
-QP = QueryParameter(OPT);
-queryString = QP.char;
-
-% appendSignature
-queryString = appendSignature(queryString,skey);
-URL = [getBaseURL endPoint '?' queryString];
-
-% Make API Request
-request = http.RequestMessage(requestMethod,binanceHeader(akey));
-response = request.send(URL);
-
-manageErrors(response);
-
+endPoint = '/api/v3/order';
+OPT.symbol = upper(symbol);
+response = sendRequest(OPT,endPoint,'GET');
 s = response.Body.Data;
 end

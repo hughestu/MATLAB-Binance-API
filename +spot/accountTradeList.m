@@ -37,13 +37,12 @@ arguments
     OPT.endTime     (1,1)
     OPT.fromId      (1,1) double
     OPT.limit       (1,1) double
-    OPT.recvWindow  (1,1) {isValidrecv(OPT.recvWindow)}
+    OPT.recvWindow  (1,1) {isValidrecv(OPT.recvWindow)}     = 5000
     OPT.accountName (1,:) char                              = 'default'
 end
 
-import matlab.net.*
-symbol = upper(symbol);
-OPT.symbol = symbol;
+
+
 
 if isfield(OPT,'limit')
     validateattributes(OPT.limit,{'numeric'},{'<=',1000,'>=',1})
@@ -69,31 +68,19 @@ if isfield(OPT,'endTime')
     end
 end
 
-% endPoint
-requestMethod = 'GET';
+
+% Send api request
+OPT.symbol = upper(symbol);
 endPoint = '/api/v3/myTrades';
+response = sendRequest(OPT,endPoint,'GET');
 
-[akey,skey] = getkeys(OPT.accountName); OPT = rmfield(OPT,'accountName');
-QP = QueryParameter(OPT);
-
-% Concatenate queryString.
-queryString = [QP.char '&timestamp=' pub.getServerTime()];
-
-% Append signature
-queryString = appendSignature(queryString,skey);
-URL = [getBaseURL endPoint '?' queryString];
-
-request = http.RequestMessage(requestMethod,binanceHeader(akey));
-response = request.send(URL);
-manageErrors(response)
-
+% Format output args
 s = struct2table(response.Body.Data);
-
 temp = cellfun(@str2double,s{:,5:8});
 
 sout = table(s.symbol, s.id, s.orderId, temp(:,1), temp(:,2), temp(:,3),...
     temp(:,4), s.commissionAsset,...
-    datetime(s.time/1000, 'ConvertFrom', 'posixtime', 'TimeZone', 'local'),...
+    datetime(s.time/1000, 'ConvertF', 'posixtime', 'TimeZone', 'local'),...
     'VariableNames', {'symbol','id','orderId','price','qty','quoteQty'...
     ,'commission','commissionAsset','time'} );
 end
