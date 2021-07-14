@@ -25,5 +25,6 @@ else
     OPT.(param).TimeZone = 'local';
     OPT.(param) = posixtime(OPT.(param))*10^3;
     
+    out = OPT;
 end
 
