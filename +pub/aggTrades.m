@@ -1,4 +1,4 @@
-function [T,lastId] = aggTrades(varargin,OPT)
+function [T,w] = aggTrades(varargin,OPT)
 % aggTrades returns public aggregated trade data for a specific symbol. 
 % Each row of aggregated trade data sumarises the trades which (i) filled  
 % at the same time; (ii) were from the same order; and (iii) had the same
@@ -7,19 +7,19 @@ function [T,lastId] = aggTrades(varargin,OPT)
 %
 % T = pub.aggTrades(symbol) returns a timetable with 500 rows of the latest
 % aggregated trade data. The output timetable gives time, price, qty and
-% the first trade id from trades that aggregated into that row.
+% the aggregate trade id.
 % 
-% T = pub.aggTrades(___,'limit',n) returns a different number of rows, n,
-% of the latest aggregated trade data for a specific symbol, where n is a
-% value between 1 and 1000.
+% T = pub.aggTrades(___,'limit',n) returns n rows of the latest aggregated
+% trade data for a specific symbol, where n is a value between 1 and 1000.
 %
 % T = pub.aggTrades(symbol,[startTime endTime]) returns the aggregated
-% trade data between a specific startTime and endTime. startTime and 
-% endTime can be defined as datetimes, or alternatively posixtimes in 
-% milliseconds (of type double). The range (endTime-startTime) may span up 
-% to one hour per api request. A limit number of rows to return, n, cannot 
-% be defined in combination with a time range. Time ranges usually allows 
-% significantly more data to be returned per api request.
+% trade data between a specific startTime and endTime (inclusive). 
+% startTime and endTime can be defined as datetimes, or alternatively 
+% posixtimes in milliseconds (of type double). The range (endTime -
+% startTime) may span up to one hour per api request. A limit number of
+% rows to return, n, cannot be defined in combination with a time range.
+% Time ranges usually allows significantly more data to be returned per api
+% request.  
 %
 % T = pub.aggTrades(symbol,fromId) returns the aggregated trade data since
 % a specific order id, fromId (type double scalar input). (Binance order 
@@ -30,9 +30,9 @@ function [T,lastId] = aggTrades(varargin,OPT)
 % data on the BTC/USDT pair):
 %  >> T = pub.aggTrades('btcusdt') .
 %
-% Example 2 (get previous hour of aggregated trade data for BTC/USDT):
+% Example 2 (get first hour of aggregated trade data for BTC/USDT today):
 % >> T = pub.aggTrades('btcusdt',...
-%        [datetime('now')-hours(1)+seconds(1) datetime('now')]);
+%            [datetime('today') datetime('today')+hours(1)]);
 %
 % Example 3 (get the first 1000 rows of aggregated trade data for some 
 % early traded symbols and plot the results):
@@ -109,23 +109,33 @@ s = request.send(URL);
 if abs(s.StatusCode)~=200
     disp(s)
     disp(s.Body.Data)
-    T = []; lastId = [];
+    T = []; 
     return
 end
 
 if isempty(s.Body.Data)
     disp('Valid request but no data')
-    T = []; lastId = [];
+    T = []; 
+    w = getWeights(s);
     return
 end
 
 p = double(string({s.Body.Data.p})).';
 t = double(string({s.Body.Data.T})).'.*1e-3;
 q = str2double({s.Body.Data.q}).';
-id = double(string({s.Body.Data.f})).';
+id = double(string({s.Body.Data.a})).';
 time = datetime(t,'ConvertFrom','posix','TimeZone','local');
 
 T = timetable(time,p,q,id,'VariableNames',{'price','qty','id'});
 
-lastId = s.Body.Data(end).a;
+w = getWeights(s);
+
+end
+
+function w = getWeights(s)
+idx = find( ismember( [s.Header.Name],...
+    ["x-mbx-used-weight","x-mbx-used-weight-1m"] ) );
+
+w = str2double([s.Header(idx).Value]);
+end
 
