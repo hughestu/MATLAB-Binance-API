@@ -10,6 +10,13 @@ function s = exchangeInfo(varargin)
 %     >> s = pub.exchangeInfo({'btcusdt','ethbtc'});
 %
 % s = pub.exchangeInfo() returns info on all symbols.
+%
+% Example 1 (generate a list of all symbols currently trading on the
+% exchange):
+%  >> s = pub.exchangeInfo
+%     s = s.symbols;
+%     idx = ismember({s.status},'TRADING');
+%     L = {s(idx).symbol};
 
 endPoint = '/api/v3/exchangeInfo';
 
