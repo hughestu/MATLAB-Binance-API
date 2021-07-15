@@ -20,8 +20,6 @@ arguments
     OPT.accountName (1,:) char                          = 'default'
 end
 
-import matlab.net.*
-
 assert(nargin<2,sprintf(...
     'Expected 0 or 1 input arguments. Instead there were %d.',nargin))
 

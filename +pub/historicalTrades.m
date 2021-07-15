@@ -86,19 +86,8 @@ if nargin == 2
 end
 
 import matlab.net.*
-
-akey =  getkeys();
-
 endPoint = '/api/v3/historicalTrades';
-requestMethod = 'GET';
-
-QP = QueryParameter(OPT);
-queryString = QP.char;
-
-request = http.RequestMessage(requestMethod,binanceHeader(akey));
-URL = [getBaseURL endPoint '?' queryString];
-response = request.send(URL);
-manageErrors(response)
+response = sendRequest(OPT,endPoint,'GET');
 
 s = response.Body.Data;
 

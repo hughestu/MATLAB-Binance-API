@@ -50,5 +50,7 @@ assert(xor(idx(1),idx(2)),...
 endPoint = '/api/v3/order';
 OPT.symbol = upper(symbol);
 response = sendRequest(OPT,endPoint,'GET');
+
 s = response.Body.Data;
+
 end
