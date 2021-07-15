@@ -1,7 +1,20 @@
-function [] = manageErrors(response,OPT)
+function [] = manageErrors(varargin)
 % Error handling for https and server responses. Throws errors for anything
 % other than a 200 HTTP status code. Formats server error message and code
 % into the error display when they are available.
+
+arguments (Repeating)
+    varargin
+end
+
+
+assert(nargin <= 2, sprintf('Expected 1-2 inputs, but there were %d',nargin))
+if nargin == 1
+    response = varargin{1};
+else
+    response = varargin{1};
+    OPT = varargin{2};
+end
 
 sc = response.StatusCode;
 try
