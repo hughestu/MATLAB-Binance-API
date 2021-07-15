@@ -12,6 +12,10 @@ function response = sendRequest(s,endPoint,requestMethod)
 
 % set isBody to true if you want to put the query parameters and values
 % into the http body, otherwise query paramters are returned in the URL
+%
+% In the absense of a recvWindow field it is implied that the request
+% doesn't require authentication, so secret key is not loaded and
+% accountName field is not removed as it should not be present either.
 
 arguments
     s                (1,1) struct
@@ -21,18 +25,26 @@ end
 
 import matlab.net.*
 
-[akey,skey]=getkeys(s.accountName); 
-s = rmfield(s,'accountName');                       % not a Q. param
+if isfield(s,'recvWindow')
+    [akey,skey]=getkeys(s.accountName); 
+    s = rmfield(s,'accountName');                   % not a Q. param
 
-if isfield(s,'recvWindow')  
     s.timestamp = pub.getServerTime();              % for hmac
+else
+    akey = getkeys; % when X-MBX-APIKEY is required
 end
 
 QP = QueryParameter(s);                             % Q. params object
+queryString = QP.char;
 
 if isfield(s,'recvWindow')                          
-    queryString = appendSignature(QP.char,skey);  	% for hmac
+    signature = HMAC(skey,queryString);
+    queryString = [queryString '&signature=' signature];  	% for hmac
 end
+
+
+header = matlab.net.http.HeaderField('X-MBX-APIKEY',...
+    akey,'Content-Type','application/x-www-form-urlencoded');
 
 
 if ismember(requestMethod,{'POST'})
@@ -40,7 +52,7 @@ if ismember(requestMethod,{'POST'})
     % Put query parameters into the http body
     URL = [getBaseURL endPoint];
     
-    request = http.RequestMessage(requestMethod,binanceHeader(akey),...
+    request = http.RequestMessage(requestMethod,header,...
         http.MessageBody(queryString)...
         );
     
@@ -49,11 +61,11 @@ else
     % Put query parameters into the queryString
     URL = [getBaseURL endPoint '?' queryString];
     
-    request = http.RequestMessage(requestMethod,binanceHeader(akey));
+    request = http.RequestMessage(requestMethod,header);
     
 end
 
 response = request.send(URL);
 
-manageErrors(response)
+manageErrors(response,s)
 
