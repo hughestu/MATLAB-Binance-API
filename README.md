@@ -42,7 +42,7 @@ repAggTrades - repeats calls to pub.aggTrades for larger datasets.
 repKlines - repeats calls to pub.klines for larger datasets.   
 
 #### Spot (spot.\*)
-accountInfo - returns spot account portfolio for default user.
+accountInfo - returns spot account portfolio for default user.   
 accountTradeList - returns your trades for a specific account and symbol.   
 allOrders - returns (open/filled) orders for a specific account and symbol.   
 cancelAllOrders - cancels all active orders on a symbol including OCO's.   
