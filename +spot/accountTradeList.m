@@ -38,7 +38,7 @@ arguments
     OPT.fromId      (1,1) double
     OPT.limit       (1,1) double
     OPT.recvWindow  (1,1) {isValidrecv(OPT.recvWindow)}     = 5000
-    OPT.accountName (1,:) char                              = 'default'
+    OPT.username (1,:) char                              = 'default'
 end
 
 

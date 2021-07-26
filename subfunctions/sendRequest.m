@@ -15,7 +15,7 @@ function response = sendRequest(s,endPoint,requestMethod)
 %
 % In the absense of a recvWindow field it is implied that the request
 % doesn't require authentication, so secret key is not loaded and
-% accountName field is not removed as it should not be present either.
+% username field is not removed as it should not be present either.
 
 arguments
     s                (1,1) struct
@@ -26,8 +26,8 @@ end
 import matlab.net.*
 
 if isfield(s,'recvWindow')
-    [akey,skey]=getkeys(s.accountName); 
-    s = rmfield(s,'accountName');                   % not a Q. param
+    [akey,skey]=getkeys(s.username); 
+    s = rmfield(s,'username');                      % not a Q. param
 
     s.timestamp = pub.getServerTime();              % for hmac
 else

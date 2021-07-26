@@ -1,4 +1,4 @@
-classdef LIMIT < spot.newOrderObj.Order & sortProps
+classdef LIMIT < newSpotOrderObject.Order & sortProps
     % LIMIT is an object for creating limit orders. Limit orders allow you 
     % to specify a specific limit price. When you place a limit order, the 
     % trade will only be executed if the market price reaches your limit 
@@ -17,7 +17,7 @@ classdef LIMIT < spot.newOrderObj.Order & sortProps
     %   newClientOrderId
     %   isTest
     %   recvWindow
-    %   accountName
+    %   username
     % 
     % If valid values are assigned to the mandatory paramters then send the
     % order to binance via:

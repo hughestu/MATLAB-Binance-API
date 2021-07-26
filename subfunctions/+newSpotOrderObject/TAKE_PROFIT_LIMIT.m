@@ -1,4 +1,4 @@
-classdef TAKE_PROFIT_LIMIT < spot.newOrderObj.Order & sortProps 
+classdef TAKE_PROFIT_LIMIT < newSpotOrderObject.Order & sortProps 
     % TAKE_PROFIT_LIMIT is an object for making take-profit-limit orders.
     % Take profit limit's are limit orders that get triggered when the 
     % current price crosses the stopPrice. Buy limit orders are

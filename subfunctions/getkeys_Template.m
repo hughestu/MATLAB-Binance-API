@@ -1,14 +1,14 @@
-function [pubKey,secKey] = getkeys_Template(accountName)
+function [pubKey,secKey] = getkeys_Template(username)
 % Use this as a template
 %
 % Instructions:
 %
 % (1) Assign the public and private keys to pubKey and secKey below. You
-% can have more than one account, just use the additional case in the
-% switch block and add keys as required for additional accounts.
+% can have more than one user, just use the additional case in the
+% switch block and add keys as required for additional users.
 %
-% (2) The default account is called 'default' itself. Ensure that one of 
-% the account names in the switch block is also called 'default'.
+% (2) The default user is called 'default' itself. Ensure that one of 
+% the usernames in the switch block is also called 'default'.
 %
 % (3) Lastly, rename the function from getkeys_Template.m to getkeys.m
 %
@@ -16,27 +16,27 @@ function [pubKey,secKey] = getkeys_Template(accountName)
 %  >> [~,~,response] = spot.accountInfo;
 % and then verifying that the response gives an HTTP 200 status code.
 
-
 arguments
-    accountName (1,:) char = 'default' % must leave named as 'default'
+    username (1,:) char = 'default'     % must leave named as 'default'
 end
 
 
-switch accountName
-    case 'default'      % accountName is nominally called 'default'
+switch username
+    case 'default'      % username is nominally called 'default'
         
         % Public key
         pubKey = '';
         % Private key
         secKey = ''; 
 
-        % Assign any name to further account you wish to include
+        % Assign any username for other sets of keys
 
-    case 'accountB'     
+    case 'userB'     
         % functions or objects which require HMAC SHA-264 authentication  
-        % can access accountB by adding the name-value pair argument
-        % 'accountName','accountB'. If the optional name-value pair
-        % argument isn't included then the default account is used.
+        % will access userB by adding the name-value pair argument
+        % 'username','userB'. When the optional name-value pair
+        % argument isn't included in those functions, they will use the
+        % 'default' user account credentials.
         
         % Public key
         pubKey = '';

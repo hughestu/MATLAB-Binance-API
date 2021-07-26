@@ -1,4 +1,4 @@
-classdef OCO < spot.newOrderObj.Order & sortProps
+classdef OCO < newSpotOrderObject.Order & sortProps
     % OCO is an object for making One Cancels the Other (OCO) orders. An 
     % OCO allows you to place two orders at the same time. It combines a 
     % limit order with a stop-limit order, but only one of the two can be
@@ -22,7 +22,7 @@ classdef OCO < spot.newOrderObj.Order & sortProps
     %   stopLimitTimeInForce
     %   isTest
     %   recvWindow
-    %   accountName
+    %   username
     
     properties
         price                   (1,1) double    = 0

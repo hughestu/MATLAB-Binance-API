@@ -1,4 +1,4 @@
-classdef STOP_LOSS_LIMIT < spot.newOrderObj.Order & sortProps
+classdef STOP_LOSS_LIMIT < newSpotOrderObject.Order & sortProps
     % STOP_LOSS_LIMIT is an object for making stop-loss-limit orders. 
     % A stop loss limit order is the same as a stop loss but instead of 
     % triggering a market order it triggers a limit order. 
@@ -19,7 +19,7 @@ classdef STOP_LOSS_LIMIT < spot.newOrderObj.Order & sortProps
     %   newClientOrderId
     %   isTest
     %   recvWindow
-    %   accountName
+    %   username
     %
     % SEE ALSO: <a href = "https://binance-docs.github.io/apidocs/spot/en/#new-order-trade">docs</a>
 

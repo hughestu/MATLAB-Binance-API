@@ -80,21 +80,21 @@ orderType = strrep(orderType,' ','_');
 
 switch orderType
     case 'LIMIT'
-        obj = spot.newOrderObj.LIMIT;
+        obj = newSpotOrderObject.LIMIT;
     case 'MARKET'
-        obj = spot.newOrderObj.MARKET;
+        obj = newSpotOrderObject.MARKET;
     case 'STOP_LOSS_LIMIT'
-        obj = spot.newOrderObj.STOP_LOSS_LIMIT;
+        obj = newSpotOrderObject.STOP_LOSS_LIMIT;
     case 'TAKE_PROFIT_LIMIT'
-        obj = spot.newOrderObj.TAKE_PROFIT_LIMIT;
+        obj = newSpotOrderObject.TAKE_PROFIT_LIMIT;
     case 'LIMIT_MAKER'
-        obj = spot.newOrderObj.LIMIT_MAKER;
+        obj = newSpotOrderObject.LIMIT_MAKER;
     case 'TAKE_PROFIT'
-        obj = spot.newOrderObj.TAKE_PROFIT;
+        obj = newSpotOrderObject.TAKE_PROFIT;
     case 'STOP_LOSS'
-        obj = spot.newOrderObj.STOP_LOSS;
+        obj = newSpotOrderObject.STOP_LOSS;
     case 'OCO'
-        obj = spot.newOrderObj.OCO;
+        obj = newSpotOrderObject.OCO;
 end
 
 assert(exist('obj','var'),...

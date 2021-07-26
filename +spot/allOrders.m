@@ -5,8 +5,9 @@ function s = allOrders(symbol,OPT)
 % given symbol, where symbol is a character row vector of a trading pair on
 % Binance.
 %
-% spot.allOrders(___,'accountName','accountB') returns all orders from
-% an account other than the default account, in this case from 'accountB'.
+% spot.allOrders(___,'username','userB') returns all orders from a user
+% account other than the default user account, in this case from 'userB'
+% (see subfunctions/getkeys.m).
 % 
 % spot.allOrders(___,'orderId',n) returns all orders for a trading symbol
 % with orderId >= n
@@ -36,7 +37,7 @@ function s = allOrders(symbol,OPT)
 %         endTime       |   numeric (posix) or datetime
 %         limit         |   integer value from 1 -  1000
 %         recvWindow    |   integer value from 1 - 60000
-%         accountName   |   char row vector
+%         username      |   char row vector
 
 arguments
     symbol (1,:) char
@@ -45,7 +46,7 @@ arguments
     OPT.endTime (1,1)
     OPT.limit (1,:) {isValidLimit(OPT.limit)}
     OPT.recvWindow (1,:) {isValidrecv(OPT.recvWindow)} = 5000;
-    OPT.accountName (1,:) char = 'default';
+    OPT.username (1,:) char = 'default';
 end
 
 

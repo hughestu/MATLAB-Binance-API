@@ -1,4 +1,4 @@
-classdef LIMIT_MAKER < spot.newOrderObj.Order & sortProps
+classdef LIMIT_MAKER < newSpotOrderObject.Order & sortProps
     % LIMIT_MAKER is an object for creating limit-maker orders. Limit-maker 
     % orders are rejected if they match for trading as a taker. Hence, this
     % order type ensures a maker order.
@@ -15,7 +15,7 @@ classdef LIMIT_MAKER < spot.newOrderObj.Order & sortProps
     %   newClientOrderId
     %   isTest
     %   recvWindow
-    %   accountName
+    %   username
     %
     % SEE ALSO: 
     % <a href =  "https://binance-docs.github.io/apidocs/spot/en/#new-order-trade" >docs</a>, <a href = "https://www.binance.com/en/support/faq/5d3fa5e5709f47e0b5f186b350da1655" >faq</a>

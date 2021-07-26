@@ -1,4 +1,4 @@
-classdef STOP_LOSS < spot.newOrderObj.Order & sortProps
+classdef STOP_LOSS < newSpotOrderObject.Order & sortProps
     % obj = STOP_LOSS - creates a stop loss order object which is passed
     % into spot.newOrderO(obj) to request a new stop loss order. A stop 
     % loss order can be sell or buy side. Stop-loss orders have a stopPrice

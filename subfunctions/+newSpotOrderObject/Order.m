@@ -9,7 +9,7 @@ classdef Order < handle & matlab.mixin.SetGet
         newClientOrderId    (1,:) double    = 0
         isTest              (1,1) logical   = false
         recvWindow          (1,1) double    = 5000
-        accountName         (1,:) char      = 'default'
+        username            (1,:) char      = 'default'
         
     end
     

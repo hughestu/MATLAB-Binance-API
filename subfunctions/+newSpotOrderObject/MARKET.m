@@ -1,4 +1,4 @@
-classdef MARKET < spot.newOrderObj.Order & sortProps
+classdef MARKET < newSpotOrderObject.Order & sortProps
     % MARKET is an object for creating market orders. A market order is an 
     % order to quickly buy or sell at the best available market price. This
     % order type takes orders (e.g. limit order by another person) off of
@@ -15,7 +15,7 @@ classdef MARKET < spot.newOrderObj.Order & sortProps
     %   newClientOrderId
     %   isTest
     %   recvWindow
-    %   accountName
+    %   username
     
     properties (Constant = true, Hidden = true)
         orderType       (1,:) char      = 'MARKET'

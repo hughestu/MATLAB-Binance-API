@@ -9,12 +9,12 @@ function [T,data,response] = accountInfo(OPT)
 %
 % Optional name-value pair arguments:
 %   recvWindow      - request timeout window (default 5000ms, max 60000ms)
-%   accountName     - specify which account to use (otherwise this uses the
+%   username     - specify which account to use (otherwise this uses the
 %                     "default" account)
 
 arguments
     OPT.recvWindow (1,1) {isValidrecv(OPT.recvWindow)} = 5000
-    OPT.accountName (1,:) = 'default'
+    OPT.username (1,:) = 'default'
 end
 
 endPoint = '/api/v3/account';

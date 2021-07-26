@@ -11,7 +11,7 @@ function [s] = cancelAllOrders(varargin, OPT)
 %
 % Optional name-value pair arguments:
 %   recvWindow      - request timeout window (default 5000ms, max 60000ms)
-%   accountName     - specify which account to use (otherwise this uses the
+%   username     - specify which account to use (otherwise this uses the
 %                     "default" account)
 %
 %   Example:
@@ -24,7 +24,7 @@ end
 
 arguments
     OPT.recvWindow  (1,:) {isValidrecv(OPT.recvWindow)} =   5000;
-    OPT.accountName (1,:) char                          =   'default'
+    OPT.username (1,:) char                          =   'default'
 end
 
 assert( nargin<2, sprintf(...

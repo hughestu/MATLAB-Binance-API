@@ -8,7 +8,7 @@ function [s] = openOrders(varargin,OPT)
 %
 % Name-value pair arguments:
 %   recvWindow      - request timeout window (default 5000ms, max 60000ms)
-%   accountName     - specify which account to use (otherwise this uses the
+%   username     - specify which account to use (otherwise this uses the
 %                     "default" account)
 
 arguments (Repeating)
@@ -17,7 +17,7 @@ end
 
 arguments
     OPT.recvWindow  (1,:) {isValidrecv(OPT.recvWindow)} = 5000
-    OPT.accountName (1,:) char                          = 'default'
+    OPT.username (1,:) char                          = 'default'
 end
 
 assert(nargin<2,sprintf(...
@@ -37,10 +37,10 @@ if isempty(response.Body.Data)
     
     if isfield(OPT,'symbol')
         fprintf(['\n\nNo active orders exist for <strong>%s</strong> on'...
-            ' the <strong>%s</strong> account!\n'],OPT.symbol,OPT.accountName)
+            ' the <strong>%s</strong> account!\n'],OPT.symbol,OPT.username)
     else
         fprintf(['\n\n There are no open orders on the '...
-            '<strong>%s</strong> account!\n'],OPT.accountName)
+            '<strong>%s</strong> account!\n'],OPT.username)
     end
     
     s = [];

@@ -13,7 +13,7 @@ function [s] = queryOrder(symbol,OPT)
 %
 % Additional name-value pair arguments:
 %   recvWindow      - request timeout window (default 5000ms, max 60000ms)
-%   accountName     - specify which account to use (otherwise this uses the
+%   username     - specify which account to use (otherwise this uses the
 %                     "default" account)
 %
 %   EXAMPLE (assuming atleast one open order exists, query it): 
@@ -33,7 +33,7 @@ arguments
     OPT.orderId             (1,:) double
     OPT.origClientOrderId   (1,:) double
     OPT.recvWindow          (1,1) double	= 5000
-    OPT.accountName         (1,:) char      = 'default'
+    OPT.username         (1,:) char      = 'default'
 end
 
 idx = ismember({'orderId','origClientOrderId'},fieldnames(OPT));

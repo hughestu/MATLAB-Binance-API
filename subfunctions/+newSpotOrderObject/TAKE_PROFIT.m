@@ -1,4 +1,4 @@
-classdef TAKE_PROFIT < spot.newOrderObj.Order & sortProps
+classdef TAKE_PROFIT < newSpotOrderObject.Order & sortProps
     %  spot.TAKE_PROFIT - object for spot.newOrderO. A stop loss order can 
     %  be or buy side.
     
