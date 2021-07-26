@@ -2,9 +2,13 @@ function T = repKlines(symbol,interval,timeRange)
 % repKlines repeats calls to pub.klines for larger datasets.
 %
 % T = pub.repKlines(symbol,interval,timeRange) returns the candle data for
-% a symbol and interval over a given timeRange, where timeRange has the 
-% form: [startTime endTime]. The timeRange can be specified as a datetime 
-% or as type double posixtimes in milliseconds. 
+% a symbol and interval over a given timeRange
+% 
+% symbol    - indicates the market, e.g. 'ethbtc'
+% interval  - can be any of the following: '1m', '3m', '5m', '15m', '30m', 
+%             '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'.
+% timeRange - is specified as [startTime endTime] and can be either a 
+% datetime array or type double posixtimes in milliseconds. 
 %
 % Example (get 1 minute data for ETH/BTC for all January 2021): 
 %  >> T = pub.repKlines('ethbtc','1m',...
