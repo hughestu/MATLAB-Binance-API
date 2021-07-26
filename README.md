@@ -1,7 +1,7 @@
 [![View MATLAB-Binance-API on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://uk.mathworks.com/matlabcentral/fileexchange/95558-matlab-binance-api)
 
 # MATLAB Binance API
-Suite of functions for accessing the [Binance API](https://binance-docs.github.io/apidocs/spot/en/#introduction) via MATLAB (R2016b or later). This package supports spot and margin trading and all public endpoints (market data) - support for WebSockets to be provided in v0.2.0.   
+Suite of functions for accessing the [Binance API](https://binance-docs.github.io/apidocs/spot/en/#introduction) via MATLAB (R2016b or later). This package supports spot and margin trading and all public endpoints - support for WebSockets to be provided in v0.2.0.   
 
 ### Features
 * Access all historical market data (from 1 week candles to individual trades)
@@ -17,7 +17,7 @@ Suite of functions for accessing the [Binance API](https://binance-docs.github.i
 ### To get started 
 1.	Download and place this folder in your MATLAB directory, then add it (and all its subfolders) to the user path. 
 
-2.  Make your public and private keys accessible via `[pubKey,secKey] = getkeys(accountName)` as follows: (i) copy your public and private keys into getkeys_Template.m (see: MATLAB-Binance-API/subfunctions/getkeys_Template.m); (ii) rename getkeys_Template.m to getkeys.m.
+2.  Make your public and private keys accessible via `[pubKey,secKey] = getkeys(username)` as follows: (i) copy your public and private keys into getkeys_Template.m (see: MATLAB-Binance-API/subfunctions/getkeys_Template.m); (ii) rename getkeys_Template.m to getkeys.m.
 
 3.  Verify that the authentication works correctly. You can do this by calling `[~,~,response] = spot.accountInfo` and then checking that the response contains an HTTP status code of 200.
 
@@ -25,10 +25,10 @@ Suite of functions for accessing the [Binance API](https://binance-docs.github.i
 
 5.	For different URL's, such as api.binance.us, you can modify subfunctions/getBaseURL.m as required. Note, I haven't been able to test api.binance.us but as far as I can tell, the endpoints are cross-compatible (feedback from anyone using .us would be appreciated).
 
-User functions are scoped to pub.\* (for the public market data endpoints), spot.* (for the spot account endpoints), cmargin.\* (for cross margin trading) and imargin.\* (for isolated margin trading). Each functions' help documentation (such as `help spot.newOrder`) provide further info and, in all cases, at least one example showing how to use that function.   
+Functions are scoped to pub.\* (for the public market data endpoints), spot.* (for the spot account endpoints), cmargin.\* (for cross margin trading) and imargin.\* (for isolated margin trading). Each functions' help documentation (such as `help spot.newOrder`) provide further info and, in all cases, at least one example showing how to use that function.   
 
 ### List of functions
-#### Public (pub.\*)
+#### Public (pub.\*) - No API keys required
 aggTrades - returns public aggregated trade data for a specific symbol.   
 bookDepth - returns up to 5000 bid/ask prices and quantities for a symbol.   
 bookTicker - returns the best bid/ask price & qty for a symbol or symbols.   
@@ -42,7 +42,7 @@ repAggTrades - repeats calls to pub.aggTrades for larger datasets.
 repKlines - repeats calls to pub.klines for larger datasets.   
 
 #### Spot (spot.\*)
-accountInfo - returns the portfolio for a given account.   
+accountInfo - returns spot account portfolio for default user.
 accountTradeList - returns your trades for a specific account and symbol.   
 allOrders - returns (open/filled) orders for a specific account and symbol.   
 cancelAllOrders - cancels all active orders on a symbol including OCO's.   
