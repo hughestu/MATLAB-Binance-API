@@ -1,50 +1,65 @@
-function response = sendRequest(s,endPoint,requestMethod)
-% getRequest converts the input structure OPT into a matlab.net http
-% request object for endpoints that require a HMAC SHA-256 signature.
+function response = sendRequest(s,endPoint,requestMethod,OPT)
+% sendRequest perpares and sends all api requests.
 %
-% s is a structure of params going into the query string
-% timestamp need not be included in s as this is obtained in sendRequest()
-% 
-% Query parameters are placed in the http body for POST requests and are
-% formatted into the query string for all other requests.
-
-% This code is so often repeated it needs to be a subfunction
-
-% set isBody to true if you want to put the query parameters and values
-% into the http body, otherwise query paramters are returned in the URL
+% sendRequest(s,endPoint,requestMethod) 
 %
-% In the absense of a recvWindow field it is implied that the request
-% doesn't require authentication, so secret key is not loaded and
-% username field is not removed as it should not be present either.
+% sendRequest(___,'xmapikey',true) adds public key into the header for
+% public endpoints that require it.
+%
+% Input s is a structure of name-value parameters which either go in the 
+% queryString or http body. Input s may also include a username field 
+% meaning that the request requires api key authentication. In this 
+% scenario, sendRequest appends a secure signature to the query string.
+%
+% When HTTP status codes other than 200 are returned, the manageErrors.m
+% function parses the server response for important info (server error
+% message, status code, filter rule broken, etc.) and throws an error with
+% said info.
+%
+% Query parameters are placed in the http body for POST requests while all
+% other request types place them in the queryString.
+%
+% * * sendRequest is being adapted into all api requests * *
 
 arguments
     s                (1,1) struct
     endPoint         (1,:) char
     requestMethod    (1,:) char
+    OPT.xmapikey     (1,1) logical = false
 end
 
 import matlab.net.*
 
-if isfield(s,'recvWindow')
-    [akey,skey]=getkeys(s.username); 
+% Use authentication when structure contains username field
+if isfield(s,'username')
+    
+    [akey,skey] = trykeys(s.username);
+    
     s = rmfield(s,'username');                      % not a Q. param
-
+    
     s.timestamp = pub.getServerTime();              % for hmac
-else
-    akey = getkeys; % when X-MBX-APIKEY is required
+    
+elseif OPT.xmapikey
+
+    akey = trykeys(); % when X-MBX-APIKEY is required (temporary solutions).
+    
 end
 
 QP = QueryParameter(s);                             % Q. params object
 queryString = QP.char;
 
-if isfield(s,'recvWindow')                          
+if exist('skey','var')
     signature = HMAC(skey,queryString);
     queryString = [queryString '&signature=' signature];  	% for hmac
 end
 
-
-header = matlab.net.http.HeaderField('X-MBX-APIKEY',...
-    akey,'Content-Type','application/x-www-form-urlencoded');
+if exist('akey','var')
+    header = http.HeaderField('X-MBX-APIKEY',...
+        akey,'Content-Type','application/x-www-form-urlencoded');
+else
+    header = http.HeaderField('Content-Type',...
+        'application/x-www-form-urlencoded');
+end
 
 
 if ismember(requestMethod,{'POST'})
@@ -68,4 +83,38 @@ end
 response = request.send(URL);
 
 manageErrors(response,s)
+
+end
+
+function varargout = trykeys(varargin)
+    if nargin ==1
+        username = varargin{1};
+    else
+        username = 'default';
+    end
+
+    try
+        if nargout == 2
+            [akey,skey]=getkeys(username);
+            varargout{1} = akey;
+            varargout{2} = skey;
+        else
+           varargout{1} =getkeys(username);
+        end
+    catch ME
+        if (strcmp(ME.identifier,'MATLAB:UndefinedFunction'))
+            msg = sprintf(['Undefined function getkeys.m\n\n'...
+                'To setup a getkeys.m file, refer to either the <a href='...
+                '"https://github.com/hughestu/MATLAB-Binance-API"'...
+                '>GitHub docs</a>\nor the template function in; '...
+                'subfunctions/getkeys_Template.m']);
+            throwAsCaller(MException('MATLAB:UndefinedFunction',msg))
+        else
+            rethrow(ME)
+        end
+    end
+end
+
+
+
 

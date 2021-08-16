@@ -4,7 +4,8 @@ function [T,response] = loanRecord(asset,symbol,OPT)
 % limit default: 10, max:100
 %
 % Example:
-%  >> [T,r] = imargin.loanRecord('btc','startTime',datetime()-days(10))
+%  >> [T,r] = imargin.loanRecord('btc','btcusdt','startTime',...
+%         datetime()-days(10))
 
 arguments
 asset           (1,:) char 	
@@ -17,7 +18,7 @@ OPT.endTime 	(1,1)
 OPT.limit 		(1,1) double    = 10
 OPT.archived 	(1,1) logical   = false
 OPT.recvWindow 	(1,:) double    = 5000
-OPT.username (1,:) char      = 'default'
+OPT.username (1,:) char         = 'default'
 end
 
 OPT.asset = upper(asset);

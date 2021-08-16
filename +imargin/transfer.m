@@ -1,4 +1,4 @@
-function varargout = transfer(asset,symbol,quantity,direction,OPT)
+function T = transfer(asset,symbol,quantity,direction,OPT)
 % transfer requests a transfer between spot and isolated margin accounts.
 %
 % imargin.transfer(asset,symbol,quantity,direction) transfers a specific
@@ -68,7 +68,7 @@ else
                     'account into the %s isolated margin account.\n'],...
                     OPT.asset,OPT.symbol)
                 if nargout == 1
-                    varargout{1} = [];
+                    T = [];
                 end
                 return
             end
@@ -82,7 +82,7 @@ else
                 fprintf(['No %s was free to transfer out of the %s '...
                     'isolated margin account.\n'],OPT.asset,OPT.symbol)
                 if nargout == 1
-                    varargout{1} = info;
+                    T = info;
                 else
                     disp(info)
                 end
@@ -102,11 +102,6 @@ if response.StatusCode == matlab.net.http.StatusCode.OK
     T = T{strcmp(T(:,1),OPT.symbol),2};
 end
 
-assert(nargout <= 1, ...
-    sprintf('Expected 0-1 output arguments, but there were %d.',nargout))
-
-if nargout == 1
-    varargout{1} = T;
-else
+if nargout == 0
     disp(T)
 end

@@ -1,4 +1,4 @@
-function varargout = repay(asset,quantity,OPT)
+function T = repay(asset,quantity,OPT)
 % repay repays a borrowed asset.
 %
 % cmargin.repay(asset,quantity) repays a loan in cross margin for a 
@@ -45,9 +45,9 @@ else
     
     if owed == 0
         fprintf('No outstanding loans for %s.\n',OPT.asset)
-        if nargout == 1
-            varargout{1} = info;
-        else
+        
+        T = info;
+        if nargout == 0
             disp(info)
         end
         
@@ -61,16 +61,11 @@ end
 endPoint = '/sapi/v1/margin/repay';
 response = sendRequest(OPT,endPoint,'POST');
 
-
 if response.StatusCode == matlab.net.http.StatusCode.OK
     info = cmargin.accountInfo('username',OPT.username);
 end
 
-assert(nargout <= 1, ...
-    sprintf('Expected 0-1 output arguments, but there were %d.',nargout))
-
-if nargout == 1
-    varargout{1} = info;
-else
+T = info;
+if nargout == 0
     disp(info)
 end

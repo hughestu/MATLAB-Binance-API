@@ -13,6 +13,8 @@ function T = repKlines(symbol,interval,timeRange)
 % Example (get 1 minute data for ETH/BTC for all January 2021): 
 %  >> T = pub.repKlines('ethbtc','1m',...
 %             [datetime(2021,1,1) datetime(2021,2,1)]);
+%     figure, plot(T.Time,T.open)
+%     ylabel('BTC'), title('ETH/BTC'), set(gca,'fontSize',16)
 %
 
 arguments
@@ -40,48 +42,69 @@ dt = durations(idx);
 
 
 if isa(timeRange,'double')
-    timeRange = datetime(timeRange./1e3,'ConvertF','posixtime','TimeZone','local');
+    timeRange = datetime(timeRange./1e3,'ConvertF','posixtime',...
+        'TimeZone','local');
 end
 
-numRows = floor(diff(timeRange)./dt); % number of rows to download
+assert(all(timeRange<=datetime()),['Invalid timeRange, inputs cannot'...
+    ' exceed the present time.'])
 
-[T,w] = pub.klines(symbol,interval,...
-    [timeRange(1) timeRange(1)+1000*dt],...
-    'limit',1);
+ft = datetime(2017,7,14,5,0,0);
+assert(all(timeRange>=ft),['Invalid timeRange: timeRange must start on'...
+    ' or after %s.'],ft)
 
-T = repmat(T,numRows,1);
+maxNumRows = floor(diff(timeRange)./dt); % max number of rows to download
 
+% Note: maxNumRows is used (instead of numRows) because sometimes there are 
+% gaps in the data, for example when a symbol's trading status goes on a
+% break.
+
+T = array2timetable([0,0,0,0,0,0,0],'RowTimes',...
+    datetime(0,0,0,'TimeZone','local'),...
+    'VariableNames',{'open','high','low','close','volume',...
+    'quoteVolume','numTrades'});
+
+T = repmat(T,maxNumRows,1);
+
+% display approximate memory requirement
 s = whos; idx = ismember({s.name},'T');
 fprintf('Approx. output array size: %8.2f MB.\n\n',s(idx).bytes*1e-6)
 
-
 ii = 1;
 n = 1000;
+w = [1 1];
+t2 = datetime(0,0,0);
 
-while ii*n < numRows                                            %#ok<BDSCI>
+while t2 ~= timeRange(2)
     
-    fprintf('Loading: %8.1f%%   (Limiter weight - %3d)\n',100*((ii-1)*n)/numRows, w(2))
+    fprintf('Loading: %8.1f%%   (Limiter weight - %3d)\n',...
+        100*((ii-1)*n)/maxNumRows, w(2))
     
-    [Ttemp,w] = pub.klines(symbol,interval,...
-        [timeRange(1) timeRange(1) + (n-1)*dt]+(ii-1)*n*dt,...
-        'limit',n);
+    t1 = timeRange(1) + (ii-1)*n*dt;
+    t2 = timeRange(1) + (ii-1)*n*dt + (n-1)*dt;
+    
+    if t2 > timeRange(2)
+        t2 = timeRange(2); % loop exit condition
+    end
+    
+    [Ttemp,w] = pub.klines(symbol,interval,[t1 t2],'limit',n);
+    
+    iStart = find(T.Time==datetime(0,0,0,'TimeZone','local'),1,'first');
+    iEnd   = iStart + height(Ttemp) - 1;
+    
+    if ~isempty(Ttemp)
+        T(iStart:iEnd,:) = Ttemp;
 
-    T(1+(ii-1)*n:ii*n,:) = Ttemp;
-    
-    T.Time(1+(ii-1)*n:ii*n,:) = Ttemp.Time;
+        T.Time(iStart:iEnd,:) = Ttemp.Time;
+    end
     
     ii = ii + 1;
 
 end
 
-n2 = rem(numRows,n);
+iLeftOver = iEnd + 1;
 
-Ttemp = pub.klines(symbol,interval,...
-        [timeRange(1)+(ii-1)*n*dt timeRange(2)],...
-        'limit',n2);
-        
-T(1+(ii-1)*n:(ii-1)*n+n2,:) = Ttemp;
-T.Time(1+(ii-1)*n:(ii-1)*n+n2) = Ttemp.Time;
+T( iLeftOver:end , : ) = [];
 
 fprintf('Loading: %8.1f%%   (Limiter weight - %3d)\n', 100, w(2))
 

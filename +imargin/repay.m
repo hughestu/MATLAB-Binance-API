@@ -1,4 +1,4 @@
-function varargout = repay(asset,symbol,quantity,OPT)
+function T = repay(asset,symbol,quantity,OPT)
 % repay repays a borrowed asset.
 %
 % imargin.repay(asset,symbol,quantity) repays a loan in isolated margin for
@@ -48,9 +48,8 @@ else
     if owed == 0
         fprintf('No %s was owed in the %s isolated margin account.\n',...
             OPT.asset,OPT.symbol)
-        if nargout == 1
-            varargout{1} = info;
-        else
+        T = info;
+        if nargout == 0
             disp(info)
         end
         return
@@ -68,11 +67,6 @@ if response.StatusCode == matlab.net.http.StatusCode.OK
     T = T{strcmp(T(:,1),OPT.symbol),2};
 end
 
-assert(nargout <= 3, ...
-    sprintf('Expected 0-1 output arguments, but there were %d.',nargout))
-
-if nargout == 1
-    varargout{1} = T;
-else
+if nargout == 0
     disp(T)
 end

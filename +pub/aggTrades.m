@@ -1,4 +1,4 @@
-function [T,w] = aggTrades(varargin,OPT)
+function [T,w] = aggTrades(symbol,varargin,OPT)
 % aggTrades returns public aggregated trade data for a specific symbol. 
 % Each row of aggregated trade data sumarises the trades which (i) filled  
 % at the same time; (ii) were from the same order; and (iii) had the same
@@ -28,7 +28,7 @@ function [T,w] = aggTrades(varargin,OPT)
 %
 % Example 1 (get a timetable with 500 rows of the latest aggregated trade 
 % data on the BTC/USDT pair):
-%  >> T = pub.aggTrades('btcusdt') .
+%  >> T = pub.aggTrades('btcusdt').
 %
 % Example 2 (get first hour of aggregated trade data for BTC/USDT today):
 % >> T = pub.aggTrades('btcusdt',...
@@ -36,11 +36,18 @@ function [T,w] = aggTrades(varargin,OPT)
 %
 % Example 3 (get the first 1000 rows of aggregated trade data for some 
 % early traded symbols and plot the results):
-% >> symbol = {'ltcbtc','bnbbtc','ethbtc','neobtc'}
+% >> symbol = {'ltcbtc','bnbbtc','ethbtc','neobtc'};
+%    id = 1;
 %    for ii = 1:numel(symbol)
-%        T = pub.aggTrades(symbol{ii},1,'limit',1000);
+%        T = pub.aggTrades(symbol{ii},id,'limit',1000);
 %        figure, plot(T.time,T.price)
+%        title(symbol{ii}), ylabel(symbol{ii}(4:end))
+%        set(gca,'fontSize',16)
 %    end
+
+arguments
+   symbol           (1,:) char
+end
 
 arguments (Repeating)
     varargin
@@ -55,39 +62,39 @@ import matlab.net.*
 assert(nargin>=1 && nargin<=2,sprintf( ['Expected 1 or 2 positional '...
     'input arguments, but %d were given.'], nargin) )
 
-validateattributes(varargin{1},{'char'},{'row'})
-OPT.symbol = upper(varargin{1});
+OPT.symbol = upper(symbol);
 
 if nargin == 2
     
+    assert( numel(varargin{1}) >= 1 && numel(varargin{1})<=2 , ...
+            ['Expected second input argument to have one or two '...
+            'elements. Instead it had %d.'],numel(varargin{1}))
+        
     % Assign input arg 2 to either OPT.fromId OR OPT.startTime and endTime.
     
-    if numel(varargin{2}) == 1
+    if numel(varargin{1}) == 1
+        
         % assign to fromId
         
-        assert(isa(varargin{2},'double'),'fromId must be type double.')
-        OPT.fromId = varargin{2};
+        assert(isa(varargin{1},'double'),'fromId must be type double.')
+        OPT.fromId = varargin{1};
         
-    elseif numel(varargin{2}) == 2
+    else
+        
         % assign to startTime and endTime
         
         assert(~isfield(OPT,'limit'),['Expected either a limiting time'...
             ' range or limit number of rows to return but not both.'])
         
-        validateattributes(varargin{2},{'double','datetime'},{'row'})
-        t = varargin{2};
+        validateattributes(varargin{1},{'double','datetime'},{'row'})
+        t = varargin{1};
         
-        if isa(varargin{2},'datetime')
-            t = datetime2posix(varargin{2});
+        if isa(varargin{1},'datetime')
+            t = datetime2posix(varargin{1});
         end
         
         OPT.startTime = t(1);
         OPT.endTime = t(2);
-        
-    else
-        
-        error(['Expected second input argument to have one or two'...
-            'elements but instead it had %d.'],numel(varargin{2}))
         
     end
     
@@ -95,16 +102,7 @@ end
 
 % endPoint
 endPoint = '/api/v3/aggTrades';
-requestMethod = 'GET';
-
-% get queryString
-QP = QueryParameter(OPT);
-queryString = QP.char;
-
-URL = [getBaseURL endPoint '?' queryString];
-
-request = http.RequestMessage(requestMethod);
-s = request.send(URL);
+s = sendRequest(OPT,endPoint,'GET');
 
 if abs(s.StatusCode)~=200
     disp(s)

@@ -37,11 +37,17 @@ QP = matlab.net.QueryParameter(OPT);
 s = webread([getBaseURL '/api/v3/depth?' QP.char]);
 
 % Convert to table
-C = cellfun(@(x,y) [str2double(x).' str2double(y).'],s.bids,s.asks,...
-    'uni',false);
+if isempty(s.bids)
+    T = [];
+else
+    
+    C = cellfun(@(x,y) [str2double(x).' str2double(y).'],s.bids,s.asks,...
+        'uni',false);
+    
+    T = array2table(cell2mat(C),...
+        'VariableNames',{'bidPrice','bidQty','askPrice','askQty'});
+end
 
-T = array2table(cell2mat(C),...
-    'VariableNames',{'bidPrice','bidQty','askPrice','askQty'});
 end
 
 

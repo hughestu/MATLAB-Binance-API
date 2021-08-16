@@ -8,7 +8,7 @@ function [T,data,response] = accountInfo(OPT)
 % [T,data] = spot.accountInfo() returns the original server response, s.
 %
 % Optional name-value pair arguments:
-%   recvWindow      - request timeout window (default 5000ms, max 60000ms)
+%   recvWindow   - request timeout window (default 5000ms, max 60000ms)
 %   username     - specify which account to use (otherwise this uses the
 %                     "default" account)
 

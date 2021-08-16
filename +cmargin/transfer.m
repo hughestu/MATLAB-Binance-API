@@ -1,4 +1,4 @@
-function varargout = transfer(asset,quantity,direction,OPT)
+function T = transfer(asset,quantity,direction,OPT)
 % transfer requests a transfer between spot and cross margin accounts.
 %
 % cmargin.transfer(asset,quantity,direction) transfers a specific quantity
@@ -74,7 +74,7 @@ else	% max quantity specified
             fprintf(['There was no %s to transfer out of your'...
                 ' cross margin account.\n'],OPT.asset)
             if nargout == 1
-                varargout{1} = [];
+                T = [];
             end
             return
         else
@@ -93,9 +93,7 @@ if response.StatusCode == matlab.net.http.StatusCode.OK
     info = cmargin.accountInfo('username',OPT.username);
 end
 
-% Manage outputs args
-if nargout == 1
-    varargout{1} = info;
-else
-    disp(info)
+T = info;
+if nargout == 0
+    disp(T)
 end

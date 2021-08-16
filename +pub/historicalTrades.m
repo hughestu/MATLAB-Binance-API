@@ -85,17 +85,21 @@ if nargin == 2
     OPT.fromId = sprintf('%d',varargin{2});
 end
 
-import matlab.net.*
 endPoint = '/api/v3/historicalTrades';
 response = sendRequest(OPT,endPoint,'GET');
 
 s = response.Body.Data;
 
-T = struct2table(s);
-T.price = str2double(T.price);
-T.qty = str2double(T.qty);
-T.quoteQty = str2double(T.quoteQty);
+if isempty(s)
+    T = [];
+else
+    T = struct2table(s);
+    T.price = str2double(T.price);
+    T.qty = str2double(T.qty);
+    T.quoteQty = str2double(T.quoteQty);
 
-T.time = datetime(T.time*1e-3,'ConvertF','posixtime','TimeZone','local');
+    T.time = datetime(T.time*1e-3,'ConvertF','posixtime',...
+        'TimeZone','local');
 
-T = table2timetable(T,'RowTimes','time');
+    T = table2timetable(T,'RowTimes','time');
+end

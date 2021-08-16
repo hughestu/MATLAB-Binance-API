@@ -8,7 +8,7 @@ function s = bookTicker(varargin)
 % exchange.
 %
 % Example:
-%   >>  s = pub.bookTicker('BTCUSDT')
+%   >>  s = pub.bookTicker('btcusdt')
 
 endPoint = '/api/v3/ticker/bookTicker';
 

@@ -5,6 +5,9 @@ function T = repAggTrades(symbol,timeRange)
 % a specific symbol and timeRange where symbol is a type char row vector
 % and timeRange is a 1 by 2 datetime array. The timeRange can be any
 % duration.
+%
+% Example (download btcusdt data from the last 24hrs):
+%  >> T = pub.repAggTrades('btcusdt',[datetime()-days(1) datetime()]);
 
 arguments
     symbol (1,:) char
@@ -45,11 +48,12 @@ totalIdRange = [firstTrades.id(1) lastTrades.id(end)];
 totalTimeRange = [firstTrades.time(1) lastTrades.time(end)];
 
 
-% Decide to use either fromId or a timerange (i.e. a startTime AND endTime). 
-% Do this by selecting the approach that on average returns more rows of 
-% data. The max rows of data returned using pub.aggTrades(symb,id,limit=1000)
-% is 1000, while the max timerange allowed is 1 hr. Thus, if the max 1hr 
-% timerange returns >1000 rows of data, use timerange, otherwise use fromId.
+% Decide to use either fromId or a timerange (i.e. a startTime AND endTime).
+% The option that returns more rows of data per api request is selected.
+% The max rows of data returned using pub.aggTrades(symb,id,limit=1000)
+% is 1000, and the max timerange per api request is 1 hr. Therefore, when
+% tradesPerHour exceeds 1000, use timeranges as this exceeds the max
+% returnable using the &limit=1000 api request.
 
 tradesPerHour = diff(totalIdRange)/hours(timeRange(2)-timeRange(1));
 

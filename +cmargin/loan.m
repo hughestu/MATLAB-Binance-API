@@ -1,4 +1,4 @@
-function varargout = loan(asset,quantity,OPT)
+function T = loan(asset,quantity,OPT)
 % loan requests a loan for a specific asset and quantity.
 %
 % cmargin.loan(asset,quantity) requests a loan for a specific asset and
@@ -51,11 +51,7 @@ if response.StatusCode == matlab.net.http.StatusCode.OK
     info = cmargin.accountInfo('username',OPT.username);
 end
 
-assert(nargout <= 1, ...
-    sprintf('Expected 0-1 output arguments, but there were %d.',nargout))
-
-if nargout == 1
-    varargout{1} = info;
-else
+T = info;
+if nargout == 0
     disp(info)
 end

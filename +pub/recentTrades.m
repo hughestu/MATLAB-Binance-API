@@ -17,6 +17,7 @@ arguments
     OPT.limit   (1,1) double    = 500
 end
 
+assert(OPT.limit >= 1,'The limit, n, must be >= 1.')
 
 OPT.symbol = upper(symbol);
 QP = matlab.net.QueryParameter(OPT);

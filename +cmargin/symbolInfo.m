@@ -6,6 +6,9 @@ function [T] = symbolInfo(varargin)
 % names, isMarginTrade, isBuyAllowed and isSellAllowed.
 %
 % cmargin.symbolInfo(symbol) returns info for a specific symbol.
+%
+% Example:
+%  >> T = cmargin.symbolInfo('ethbtc');
 
 assert(nargin <= 1, ...
     sprintf('Expected 0-1 input arguments but there were %d',nargin))
@@ -20,7 +23,7 @@ else
     endPoint = '/sapi/v1/margin/pair';
 end
 
-response = sendRequest(s,endPoint,'GET');
+response = sendRequest(s,endPoint,'GET','xmapikey',true);
 
 T = struct2table(response.Body.Data);
 
