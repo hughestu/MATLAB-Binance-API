@@ -1,4 +1,4 @@
-function obj = newOrder(orderType)
+function [obj] = newOrder(orderType)
 % newOrder creates an object for making orders of a given orderType.
 %
 % obj = spot.newOrder(orderType) instantiates the order object where 
