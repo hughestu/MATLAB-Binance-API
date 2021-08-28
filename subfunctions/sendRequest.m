@@ -41,7 +41,7 @@ if isfield(s,'username')
     
 elseif OPT.xmapikey
 
-    akey = trykeys(); % when X-MBX-APIKEY is required (temporary solutions).
+    akey = trykeys(); % when X-MBX-APIKEY is required.
     
 end
 
