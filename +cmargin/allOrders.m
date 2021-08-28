@@ -24,11 +24,27 @@ OPT.startTime           (1,1)
 OPT.endTime             (1,1)
 OPT.limit               (1,1) double = 500
 OPT.recvWindow          (1,1) double = 5000
-OPT.username         (1,:) char   = 'default'
+OPT.username            (1,:) char   = 'default'
 end
 
 OPT.symbol = upper(symbol);
 OPT.isIsolated = 'FALSE';
+
+% Change startTime to posixtime format if required
+if isfield(OPT,'startTime')
+    validateattributes(OPT.startTime,{'numeric','datetime'},{'scalar'})
+    if isa(OPT.startTime,'datetime')      
+        OPT = datetime2posix(OPT,'startTime');
+    end
+end
+
+% Change endTime format if required
+if isfield(OPT,'endTime')
+    validateattributes(OPT.endTime,{'numeric','datetime'},{'scalar'})
+    if isa(OPT.endTime,'datetime')
+        OPT = datetime2posix(OPT,'endTime');
+    end
+end
 
 endPoint = '/sapi/v1/margin/allOrders';
 response = sendRequest(OPT,endPoint,'GET');
