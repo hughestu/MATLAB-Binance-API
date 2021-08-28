@@ -1,19 +1,19 @@
-function [sout] = accountTradeList(symbol,OPT)
+function [T] = accountTradeList(symbol,OPT)
 % accountTradeList returns your trades for a specific account and symbol.
 %
-% s = spot.accountTradeList(symbol) returns your trade history for a 
+% s = spot.accountTradeList(symbol) returns your trade history for a
 % specific symbol (note: input symbol is mandatory).
 %
-% s = spot.accountTradeList(symbol,'startTime',startTime) returns your 
+% s = spot.accountTradeList(symbol,'startTime',startTime) returns your
 % trade history from startTime onwards (t >= startTime). startTime can be
 % a datetime or a numeric datatype (where numerics are posixtime in ms).
 %
-% s = spot.accountTradeList(symbol,'endTime',endTime) returns your trade 
+% s = spot.accountTradeList(symbol,'endTime',endTime) returns your trade
 % history from before endTime (t <= endTime). endTime can be a datetime or
 % a numeric datatype.
 %
 % s = spot.accountTradeList(symbol,'fromId',orderId) returns orders >=
-% orderID, otherwise the most recent orders are returned. Note, this 
+% orderID, otherwise the most recent orders are returned. Note, this
 % function doesn't accept start or end times when an orderId is specified.
 %
 % s = spot.accountTradeList(___,'limit',limit) specifies the upper limit
@@ -25,8 +25,8 @@ function [sout] = accountTradeList(symbol,OPT)
 %   EXAMPLE:
 %   Request btc/usdt trades which were implemented on the default account:
 %    >> s = spot.accountTradeList('btcusdt');
-%   
-%   Request the first two btc/usdt trades implemented on the default 
+%
+%   Request the first two btc/usdt trades implemented on the default
 %   account from yesterday:
 %    >> s = spot.accountTradeList('btcusdt','startTime',...
 %               datetime('yesterday'),'limit',2)
@@ -42,8 +42,6 @@ arguments
 end
 
 
-
-
 if isfield(OPT,'limit')
     validateattributes(OPT.limit,{'numeric'},{'<=',1000,'>=',1})
 end
@@ -56,7 +54,7 @@ end
 
 if isfield(OPT,'startTime')
     validateattributes(OPT.startTime,{'numeric','datetime'},{'scalar'})
-    if isa(OPT.startTime,'datetime')
+    if isa(OPT.startTime,'datetime')    
         OPT = datetime2posix(OPT,'startTime');
     end
 end
@@ -68,22 +66,24 @@ if isfield(OPT,'endTime')
     end
 end
 
-
 % Send api request
 OPT.symbol = upper(symbol);
 endPoint = '/api/v3/myTrades';
 response = sendRequest(OPT,endPoint,'GET');
 
 % Format output args
+if isempty(response.Body.Data)
+    T = [];
+    return
+end
+
 s = struct2table(response.Body.Data);
 temp = cellfun(@str2double,s{:,5:8});
 
-sout = table(s.symbol, s.id, s.orderId, temp(:,1), temp(:,2), temp(:,3),...
+T = table(s.symbol, s.id, s.orderId, temp(:,1), temp(:,2), temp(:,3),...
     temp(:,4), s.commissionAsset,...
     datetime(s.time/1000, 'ConvertF', 'posixtime', 'TimeZone', 'local'),...
     'VariableNames', {'symbol','id','orderId','price','qty','quoteQty'...
     ,'commission','commissionAsset','time'} );
-end
-
 
 
