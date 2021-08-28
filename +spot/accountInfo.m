@@ -21,6 +21,11 @@ endPoint = '/api/v3/account';
 response = sendRequest(OPT,endPoint,'GET');
 data = response.Body.Data;
 
+if isempty(data)
+    T = [];
+    return
+end
+
 % Output Arg Formatting
 if isstruct(data.balances)
     % Index for assets with non-zero holdings.
