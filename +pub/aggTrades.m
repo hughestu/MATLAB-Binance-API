@@ -40,7 +40,7 @@ function [T,w] = aggTrades(symbol,varargin,OPT)
 %    id = 1;
 %    for ii = 1:numel(symbol)
 %        T = pub.aggTrades(symbol{ii},id,'limit',1000);
-%        figure, plot(T.time,T.price)
+%        figure, plot(T.Time,T.price)
 %        title(symbol{ii}), ylabel(symbol{ii}(4:end))
 %        set(gca,'fontSize',16)
 %    end
@@ -57,12 +57,12 @@ arguments
     OPT.limit       (1,1) double
 end
 
-import matlab.net.*
-
 assert(nargin>=1 && nargin<=2,sprintf( ['Expected 1 or 2 positional '...
     'input arguments, but %d were given.'], nargin) )
 
 OPT.symbol = upper(symbol);
+
+tZone = 'local';
 
 if nargin == 2
     
@@ -89,8 +89,13 @@ if nargin == 2
         validateattributes(varargin{1},{'double','datetime'},{'row'})
         t = varargin{1};
         
-        if isa(varargin{1},'datetime')
-            t = datetime2posix(varargin{1});
+        if isa(t,'datetime')
+            if isempty(t.TimeZone)
+                t.TimeZone = tZone; % assign the local timezone
+            else
+                tZone = t.TimeZone; % store the user defined timezone
+            end
+            t = datetime2posix(t);  % finally convert t to posixtime
         end
         
         OPT.startTime = t(1);
@@ -122,9 +127,9 @@ p = double(string({s.Body.Data.p})).';
 t = double(string({s.Body.Data.T})).'.*1e-3;
 q = str2double({s.Body.Data.q}).';
 id = double(string({s.Body.Data.a})).';
-time = datetime(t,'ConvertFrom','posix','TimeZone','local');
+Time = datetime(t,'ConvertFrom','posix','TimeZone',tZone);
 
-T = timetable(time,p,q,id,'VariableNames',{'price','qty','id'});
+T = timetable(Time,p,q,id,'VariableNames',{'price','qty','id'});
 
 w = getWeights(s);
 

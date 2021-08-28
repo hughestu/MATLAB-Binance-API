@@ -14,13 +14,17 @@ arguments
     timeRange (1,2) datetime
 end
 
-% Get sample data to determine the first and last trades inside the user    %
-% specified timeRange.                                                      %
+% Get sample data to determine the first and last trades inside the user  %
+% defined timeRange.                                                      %
 
 fprintf('Fetching start/end times from server...\n\n')
 
 firstTrades = [];
 dt = hours(0);
+
+if isempty(timeRange.TimeZone)
+    timeRange.TimeZone = 'local';
+end
 
 % Most times these loops wont loop, but occasionally theres no data even in
 % a full hour - Binance often puts a symbols trading status on 'BREAK'.
@@ -45,15 +49,15 @@ assert(~isempty(firstTrades),sprintf(...
     char(timeRange(1)), char(timeRange(2)), symbol))
 
 totalIdRange = [firstTrades.id(1) lastTrades.id(end)];
-totalTimeRange = [firstTrades.time(1) lastTrades.time(end)];
+totalTimeRange = [firstTrades.Time(1) lastTrades.Time(end)];
 
 
-% Decide to use either fromId or a timerange (i.e. a startTime AND endTime).
+% Decide to use either fromId or a timerange (startTime AND endTime).
 % The option that returns more rows of data per api request is selected.
 % The max rows of data returned using pub.aggTrades(symb,id,limit=1000)
 % is 1000, and the max timerange per api request is 1 hr. Therefore, when
-% tradesPerHour exceeds 1000, use timeranges as this exceeds the max
-% returnable using the &limit=1000 api request.
+% tradesPerHour exceeds 1000, rep.AggTrades uses timeranges since it
+% returns more data per api reqest than &limit=1000.
 
 tradesPerHour = diff(totalIdRange)/hours(timeRange(2)-timeRange(1));
 
@@ -71,7 +75,7 @@ if tradesPerHour > 1000
     fprintf('Loading: %8.1f%%   (Limiter weight - %3d)\n',0, w(2))
     idx = 1;
     
-    t1 = firstTrades.time(1);
+    t1 = totalTimeRange(1);
     
     while t1 < totalTimeRange(2)
         
@@ -89,11 +93,14 @@ if tradesPerHour > 1000
         
         [Ttemp,w] = pub.aggTrades(symbol,[t1 t2]);
         
-        T( idx : idx+height(Ttemp)-1, : ) = Ttemp;
-        T.time( idx : idx+height(Ttemp)-1 ) = Ttemp.time;
-        
-        idx = idx + height(Ttemp) - 1;
-        t1 = Ttemp.time(end);
+        if isempty(Ttemp)
+            t1 = t2; % and no update to T
+        else
+            T( idx : idx+height(Ttemp)-1, : ) = Ttemp;
+            T.Time( idx : idx+height(Ttemp)-1 ) = Ttemp.Time;
+            idx = idx + height(Ttemp) - 1;
+            t1 = Ttemp.Time(end);
+        end
         
         fprintf('Loading: %8.1f%%   (Limiter weight - %3d)\n',...
             100*idx/(diff(totalIdRange)+1), w(2))
@@ -123,7 +130,7 @@ else
         [Ttemp,w] = pub.aggTrades(symbol,idStart,'limit',n);
         
         T(idx:idx+height(Ttemp)-1,:) = Ttemp;
-        T.time(idx:idx+height(Ttemp)-1) = Ttemp.time;
+        T.Time(idx:idx+height(Ttemp)-1) = Ttemp.Time;
         
         idStart = idStart + 1000;
         

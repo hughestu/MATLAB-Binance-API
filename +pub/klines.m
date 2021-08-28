@@ -47,6 +47,25 @@ function [T,w,response] = klines(symbol,interval,varargin,OPT)
 %     set(gca,'XLim',x);      % set xlim to same value as candlestick chart
 %     ylabel('RSI')
 %     ylim([0 100])
+%
+% Example 5 (load data using different timezones and plot results):
+%  >> t = [datetime(2021,1,1) datetime(2021,1,3)];
+%     t.TimeZone = 'GMT';
+%     d = pub.klines('btcusdt','1h',t);
+%     figure('WindowState','Maximized'), subplot(2,1,1)
+%     candle(d)
+%     ylim([28000 34000])
+%     ylabel('BTC / USDT')
+%     title('1hr chart (GMT)')
+% 
+%     t = [datetime(2021,1,1) datetime(2021,1,3)];
+%     t.TimeZone = 'America/New_York';
+%     d = pub.klines('btcusdt','1h',t);
+%     subplot(2,1,2)
+%     candle(d)
+%     ylabel('BTC / USDT')
+%     title('1hr chart (UTC -5)')
+%     ylim([28000 34000])
 
 
 arguments
@@ -69,14 +88,28 @@ OPT.symbol = upper(symbol);
 OPT.interval = interval;
 
 if nargin == 3
+    
     validateattributes(varargin{1},{'datetime','double'},{'row','numel',2})
     t = varargin{1};
+    
+    tZone = 'local'; % by default
+    
     if isa(varargin{1},'datetime')
-        t.TimeZone = 'local';
-        t = posixtime(t)*1e3;
+        
+        % Either assign a default timezone or store the user defined
+        % timezone for use in the output timetable.
+        if isempty(t.TimeZone) 
+            t.TimeZone = tZone;     % assign the local timezone
+        else
+            tZone = t.TimeZone;     % store the user defined timezone
+        end
+        t = posixtime(t)*1e3;       % finally convert t to posixtime
+        
     end
+    
     OPT.startTime = t(1);
     OPT.endTime = t(2);
+    
 end
 
 response = sendRequest(OPT,'/api/v3/klines','GET');
@@ -90,7 +123,7 @@ else
     
     Ta = horzcat(response.Body.Data{:}).';
     
-    time = datetime([Ta{:,1}]*1e-3,'ConvertF','posixtime','TimeZone','local').';
+    time = datetime([Ta{:,1}]*1e-3,'ConvertF','posixtime','TimeZone',tZone).';
     
     OHLCV = cellfun(@str2double,Ta(:,2:6));
     
