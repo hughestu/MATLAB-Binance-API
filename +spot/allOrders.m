@@ -1,4 +1,4 @@
-function s = allOrders(symbol,OPT)
+function [s] = allOrders(symbol,OPT)
 % allOrders returns (open/filled) orders for a specific account and symbol.
 %
 % s = spot.allOrders(symbol) returns all orders (open or filled) for a
@@ -79,7 +79,7 @@ response = sendRequest(OPT,endPoint,'GET');
 s = response.Body.Data;
 
 if ~isempty(s)
-    s = formatOrders_struct2table(s); % (I personally find this easier).
+    s = formatOrders_struct2table(s); % output formatting
 end
 
 end
