@@ -34,7 +34,7 @@ function [obj] = newOrder(orderType)
 %  >> set(obj,'symbol','btcusdt','side','buy','quantity',1e-3)
 %  >> s = obj.send;
 %
-% The following example is similar to example 1 but using a quote order 
+% The following example continues from example 1 but using a quote order 
 % quantity instead.
 %
 % Example 2:
