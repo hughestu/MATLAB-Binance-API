@@ -1,6 +1,6 @@
 [![View MATLAB-Binance-API on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://uk.mathworks.com/matlabcentral/fileexchange/95558-matlab-binance-api)
 
-# MATLAB Binance API
+# MATLAB Binance API (v0.1.3)
 Suite of functions for accessing the [Binance API](https://binance-docs.github.io/apidocs/spot/en/#introduction) via MATLAB (R2016b or later). This package supports spot and margin trading and all public endpoints - support for WebSockets to be provided in v0.2.0.   
 
 ### Features
