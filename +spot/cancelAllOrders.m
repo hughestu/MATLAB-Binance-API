@@ -27,6 +27,7 @@ arguments
     OPT.username (1,:) char                          =   'default'
 end
 
+
 assert( nargin<2, sprintf(...
     'Expected 0 or 1 input arguments. Instead there were %d.',nargin ))
 
@@ -74,7 +75,7 @@ else
         
         s(ii,:) = {symbols{ii} response.Body.Data};
         
-        if response.StatusCode == http.StatusCode.OK
+        if response.StatusCode == matlab.net.http.StatusCode.OK
             fprintf('Deleted %s orders.\n',symbols{ii})
         end
         
