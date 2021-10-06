@@ -66,7 +66,7 @@ classdef Order < handle & matlab.mixin.SetGet
         function endPoint = get.endPoint(obj)
             
             if obj.isOCO
-                endPoint = '/api/v3/order/oco';
+                endPoint = '/sapi/v1/margin/order/oco';
             else
                 endPoint = '/sapi/v1/margin/order';
             end
@@ -93,7 +93,8 @@ classdef Order < handle & matlab.mixin.SetGet
                 ...     % indirect (newOrder params)
                 'orderType','quantity','price','stopPrice','icebergQty','isIsolated',...
                 ...     % indirect (OCO params)
-                'newClientOrderId','stopLimitPrice','limitIcebergQty','stopIcebergQty'});
+                'newClientOrderId','stopLimitPrice','limitIcebergQty','stopIcebergQty',...
+                'limitClientOrderId','stopClientOrderId'});
             
             f(idel) = [];
             
@@ -140,6 +141,14 @@ classdef Order < handle & matlab.mixin.SetGet
             for ii = 1:numel(params)
                 if isprop(obj,params{ii}) && obj.(params{ii}) ~= 0
                     s.(params{ii}) = sprintf('%.8f',obj.(params{ii}));
+                end
+            end
+            
+            idParams = {'limitClientOrderId','stopClientOrderId'};
+            
+            for ii = 1:numel(idParams)
+                if isprop(obj,idParams{ii}) && obj.(idParams{ii}) ~= 0
+                    s.(idParams{ii}) = obj.(idParams{ii});
                 end
             end
 

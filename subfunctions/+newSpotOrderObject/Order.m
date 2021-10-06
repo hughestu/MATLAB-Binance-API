@@ -105,7 +105,8 @@ classdef Order < handle & matlab.mixin.SetGet
                 ...     % indirect (newOrder params)
                 'orderType','quantity','price','stopPrice','icebergQty',...
                 ...     % indirect (OCO params)
-                'newClientOrderId','stopLimitPrice','limitIcebergQty','stopIcebergQty'});
+                'newClientOrderId','stopLimitPrice','limitIcebergQty','stopIcebergQty',...
+                'limitClientOrderId','stopClientOrderId'});
             
             f(idel) = [];
             
@@ -125,7 +126,8 @@ classdef Order < handle & matlab.mixin.SetGet
                 else
                     s.newClientOrderId = obj.newClientOrderId;
                 end
-            end
+            end     
+            
             
             % Note: prices and quantities are initialised in the subclasses
             % as type double equal to zero. The user has to change such
@@ -149,6 +151,14 @@ classdef Order < handle & matlab.mixin.SetGet
             for ii = 1:numel(params)
                 if isprop(obj,params{ii}) && obj.(params{ii}) ~= 0
                     s.(params{ii}) = sprintf('%.8f',obj.(params{ii}));
+                end
+            end
+            
+            idParams = {'limitClientOrderId','stopClientOrderId'};
+            
+            for ii = 1:numel(idParams)
+                if isprop(obj,idParams{ii}) && obj.(idParams{ii}) ~= 0
+                    s.(idParams{ii}) = obj.(idParams{ii});
                 end
             end
 
