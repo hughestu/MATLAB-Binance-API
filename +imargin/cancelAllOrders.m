@@ -22,6 +22,8 @@ arguments
 end
 
 OPT.symbol = upper(symbol);
+
+OPT.isIsolated = 'TRUE';
 endPoint = '/sapi/v1/margin/openOrders';
 response = sendRequest(OPT,endPoint,'DELETE');
 
