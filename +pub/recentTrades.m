@@ -1,8 +1,8 @@
 function T = recentTrades(symbol,OPT)
-% recentTrades returns a list of recent trades for a specific symbol.
+% recentTrades returns recent market trades for a specific symbol.
 %
-% T = pub.recentTrades(symbol) returns the last 500 trades for the symbol. 
-% Input variable, symbol, is a character row vector. 
+% T = pub.recentTrades(symbol) returns the last 500 trades on Binance for
+% a given symbol. Input variable, symbol, is a character row vector. 
 %
 % T = pub.recentTrades(symbol,'limit',val) specifies the number of trades
 % to include in the server response.
