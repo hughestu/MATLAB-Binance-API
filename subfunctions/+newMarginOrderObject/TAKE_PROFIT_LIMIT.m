@@ -17,9 +17,13 @@ classdef TAKE_PROFIT_LIMIT < newMarginOrderObject.Order & sortProps
     end
     
     methods
-        function obj = TAKE_PROFIT_LIMIT
+        function obj = TAKE_PROFIT_LIMIT(isIsolated)
             % Constructor
-            obj@sortProps([4:7 1:3 8:10]);
+            arguments
+                isIsolated = false
+            end
+            obj@sortProps([4:6 1:3 7:9]);
+            obj.isIsolated = isIsolated;
         end
     end
 end

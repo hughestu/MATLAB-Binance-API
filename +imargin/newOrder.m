@@ -61,7 +61,7 @@ orderType = strrep(orderType,' ','_');
 
 switch orderType
     case 'LIMIT'
-        obj = newMarginOrderObjectect.LIMIT(true);
+        obj = newMarginOrderObject.LIMIT(true);
     case 'MARKET'
         obj = newMarginOrderObject.MARKET(true);
     case 'STOP_LOSS_LIMIT'

@@ -32,8 +32,12 @@ classdef LIMIT_MAKER < newMarginOrderObject.Order & sortProps
     end
     
     methods
-        function obj = LIMIT_MAKER
-            obj@sortProps([3:6 1 2 7:9])
+        function obj = LIMIT_MAKER(isIsolated)
+            arguments
+                isIsolated = false
+            end
+            obj@sortProps([3:5 1 2 6:8])
+            obj.isIsolated = isIsolated;
         end
     end
 end

@@ -38,8 +38,12 @@ classdef LIMIT < newMarginOrderObject.Order & sortProps
     end
     
     methods (Hidden)
-        function obj = LIMIT
+        function obj = LIMIT(isIsolated)
+            arguments
+                isIsolated = false
+            end
             obj@sortProps([4:6 1:3 7:9])
+            obj.isIsolated = isIsolated;
         end
     end
     

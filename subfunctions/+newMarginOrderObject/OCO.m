@@ -39,9 +39,14 @@ classdef OCO < newMarginOrderObject.Order & sortProps
     end
     
     methods
-        function obj = OCO
+        function obj = OCO(isIsolated)
+            % Constructor
+            arguments
+                isIsolated = false
+            end
             obj@sortProps([9:11 1:3 12 4:8 13:14])
             obj.isOCO = true;
+            obj.isIsolated = isIsolated;
         end
        
     end

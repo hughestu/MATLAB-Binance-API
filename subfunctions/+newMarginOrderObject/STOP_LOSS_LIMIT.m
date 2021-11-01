@@ -35,8 +35,12 @@ classdef STOP_LOSS_LIMIT < newMarginOrderObject.Order & sortProps
     end
     
     methods
-        function obj = STOP_LOSS_LIMIT
-            obj@sortProps([4:7 1:3 8:10])
+        function obj = STOP_LOSS_LIMIT(isIsolated)
+            arguments
+                isIsolated = false
+            end
+            obj@sortProps([4:6 1:3 7:9])
+            obj.isIsolated = isIsolated;
         end
         
         function set.timeInForce(obj,timeInForce)
