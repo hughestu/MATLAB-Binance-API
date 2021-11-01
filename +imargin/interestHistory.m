@@ -1,16 +1,30 @@
-function T = interestHistory(varargin,symbol,OPT)
+function T = interestHistory(symbol,varargin,OPT)
 % interestHistory returns interest history on loans.
 %
-% imargin.interestHistory()
+% imargin.interestHistory(symbol)
 %
-% imargin.interestHistory(asset,timeRange)
+% imargin.interestHistory(___,asset)
+%
+% imargin.interestHistory(___,'startTime',t1) requests interestHistory from
+% a specific startTime, which is either a type double posixtime in
+% milliseconds, or a datetime type.
+%
+% imargin.interestHistory(___,'startTime',t1,'endTime',t2) request
+% interestHistory within the timerange t1 to t2. You may also solely
+% specify an endTime.
+%
+% Example: 
+%   >> imargin.interestHistory('btcusdt','startTime',datetime(2017,9,1))
+%   >> imargin.interestHistory('btcusdt','usdt','startTime',datetime(2017,9,1))
 
-arguments (Repeating)
-    varargin
-end
 
 arguments
     symbol
+end
+arguments (Repeating)
+    varargin
+end
+arguments
     OPT.startTime 	(1,1)
     OPT.endTime 	(1,1)
     
@@ -20,16 +34,15 @@ arguments
     OPT.username (1,:) char      = 'default'
 end
 
-assert(nargin <= 2, ...
-    sprintf('Expected 1 - 2 input arugments, but there were %d.',nargin));
+assert(nargin <= 3, ...
+    sprintf('Expected 1 - 3 input arugments, but there were %d.',nargin));
 
-
-if nargin >= 1
+if nargin >= 2
     validateattributes(varargin{1},{'char'},{'row'})
     OPT.asset = upper(varargin{1});
 end
 
-OPT.isolatedSymbol = upper('symbol');
+OPT.isolatedSymbol = upper(symbol);
 
 if isfield(OPT,'startTime')
     validateattributes(OPT.startTime,{'double','datetime'},{})
