@@ -5,6 +5,9 @@ function [T,s] = historicalTrades(varargin,OPT)
 % latest trades for a specific symbol (where symbol is a type char row 
 % vector).
 % e.g. >> T = pub.historicalTrades('btcusdt')
+% 
+% Note: this function requires an api key (see the "To get started" section
+% on <a href ="https://github.com/hughestu/MATLAB-Binance-API">GitHub</a> for info on key setup).
 %
 % T = pub.historicalTrades(symbol,fromId) returns trades with trade id >= 
 % fromId for a specific symbol (the first trade of a symbol's trade history
@@ -86,7 +89,7 @@ if nargin == 2
 end
 
 endPoint = '/api/v3/historicalTrades';
-response = sendRequest(OPT,endPoint,'GET');
+response = sendRequest(OPT,endPoint,'GET','xmapikey',true);
 
 s = response.Body.Data;
 
