@@ -1,7 +1,8 @@
 [![View MATLAB-Binance-API on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://uk.mathworks.com/matlabcentral/fileexchange/95558-matlab-binance-api)
 
-# MATLAB Binance API (v0.1.3)
-Suite of functions for accessing the [Binance API](https://binance-docs.github.io/apidocs/spot/en/#introduction) via MATLAB (R2016b or later). This package supports spot and margin trading and all public endpoints - support for WebSockets to be provided in v0.2.0.   
+# MATLAB Binance API
+Suite of functions for accessing the [Binance API](https://binance-docs.github.io/apidocs/spot/en/#introduction) via MATLAB (R2016b or later). This package supports spot and margin trading and all public endpoints.  
+##### v0.1.3
 
 ### Features
 * Access all historical market data (from 1 week candles to individual trades)
@@ -73,7 +74,7 @@ transferHistory - returns a list of transfers in and out of margin.
 
 ### Releases
 v0.0.0 - First release with main components of spot.\* and pub.\*.  
-v0.1.0 - Support for cross and isolated margin trading via cmargin.\* and imargin.\* (29 endpoints).  
+v0.1.0 - Support for cross and isolated margin trading via cmargin.\* and imargin.\* (29 endpoints). 
 
 ### Feedback
 If you've benefited from the code, please consider leaving a review/rating on my [FEX Submission](https://uk.mathworks.com/matlabcentral/fileexchange/95558-matlab-binance-api).
