@@ -2,7 +2,7 @@
 
 # MATLAB Binance API
 Suite of functions for accessing the [Binance API](https://binance-docs.github.io/apidocs/spot/en/#introduction) via MATLAB (R2016b or later). This package supports spot and margin trading and all public endpoints.  
-##### v0.1.3
+##### v0.1.4
 
 ### Features
 * Access all historical market data (from 1 week candles to individual trades)
