@@ -103,7 +103,7 @@ if nargin == 3
         else
             tZone = t.TimeZone;     % store the user defined timezone
         end
-        t = posixtime(t)*1e3;       % finally convert t to posixtime
+        t = round(posixtime(t)*1e3);       % finally convert t to posixtime
         
     end
     

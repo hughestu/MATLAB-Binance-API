@@ -17,7 +17,7 @@ if nargin == 1
     if isempty(t.TimeZone)
         t.TimeZone = 'local';
     end
-    out = posixtime(t)*10^3;
+    out = round(posixtime(t)*10^3);
     
 else
     
@@ -31,7 +31,7 @@ else
         OPT.(param).TimeZone = 'local';
     end
     
-    OPT.(param) = posixtime(OPT.(param))*10^3;
+    OPT.(param) = round(posixtime(OPT.(param))*10^3);
     
     out = OPT;
 end
