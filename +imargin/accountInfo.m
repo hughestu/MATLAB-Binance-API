@@ -25,7 +25,7 @@ s = data.assets;
 % Table formatting
 if ~isempty(s)
 
-     for ii = 1:height(s)
+     for ii = 1:size(s,1)
          b = s(ii).baseAsset;
          q = s(ii).quoteAsset;
          

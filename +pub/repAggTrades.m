@@ -96,9 +96,9 @@ if tradesPerHour > 1000
         if isempty(Ttemp)
             t1 = t2; % and no update to T
         else
-            T( idx : idx+height(Ttemp)-1, : ) = Ttemp;
-            T.Time( idx : idx+height(Ttemp)-1 ) = Ttemp.Time;
-            idx = idx + height(Ttemp) - 1;
+            T( idx : idx+size(Ttemp,1)-1, : ) = Ttemp;
+            T.Time( idx : idx+size(Ttemp,1)-1 ) = Ttemp.Time;
+            idx = idx + size(Ttemp,1) - 1;
             t1 = Ttemp.Time(end);
         end
         
@@ -129,13 +129,13 @@ else
         
         [Ttemp,w] = pub.aggTrades(symbol,idStart,'limit',n);
         
-        T(idx:idx+height(Ttemp)-1,:) = Ttemp;
-        T.Time(idx:idx+height(Ttemp)-1) = Ttemp.Time;
+        T(idx:idx+size(Ttemp,1)-1,:) = Ttemp;
+        T.Time(idx:idx+size(Ttemp,1)-1) = Ttemp.Time;
         
         idStart = idStart + 1000;
         
         fprintf('Loading: %8.1f%%   (Limiter weight - %3d)\n',...
-            100*(idx+height(Ttemp)-1)/(diff(totalIdRange)+1), w(2))
+            100*(idx+size(Ttemp,1)-1)/(diff(totalIdRange)+1), w(2))
         
         idx = idx + 1000;
         

@@ -105,7 +105,7 @@ while t2 ~= timeRange(2)
     [Ttemp,w] = pub.klines(symbol,interval,[t1 t2],'limit',n);
     
     iStart = find( T.Time == t_null ,1,'first');
-    iEnd   = iStart + height(Ttemp) - 1;
+    iEnd   = iStart + size(Ttemp,1) - 1;
     
     if ~isempty(Ttemp)
         T(iStart:iEnd,:) = Ttemp;

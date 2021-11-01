@@ -109,7 +109,7 @@ s = response.Body.Data;
 % output formatting
 if ~isempty(s) && ~isempty(s.rows)
     
-    if height(s.rows) == 1
+    if size(s.rows,1) == 1
         T = struct2table(s.rows,'AsArray',true); % requirement for scalar s
     else
         T = struct2table(s.rows);

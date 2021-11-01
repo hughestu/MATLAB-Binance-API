@@ -2,7 +2,7 @@ function t = formatOrders_struct2table(s)
 t = struct2table(s);
 fnames = fieldnames(s);
 
-if height(t) > 1
+if size(t,1) > 1
     for c = [5:8 13 14 18]
         t.(fnames{c}) = cellfun(@str2double,t.(fnames{c}));
     end
