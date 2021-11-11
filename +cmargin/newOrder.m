@@ -19,6 +19,8 @@ function obj = newOrder(orderType)
 %   - A list of available symbols and corresponding trade permissions for
 %     each symbol is available at:
 %      >> s = pub.exchangeInfo
+%       OR
+%      >> s = cmargin.symbolInfo
 %   - No symbols on the exchange currently support stop-loss or take-profit
 %     orders.
 %

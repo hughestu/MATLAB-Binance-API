@@ -115,7 +115,8 @@ classdef Order < handle & matlab.mixin.SetGet
                 s.(f{ii}) = obj.(f{ii});
             end
             
-            % Include order type (except for OCO's which require a type).
+            % Include order type (except for OCO's which don't require a 
+            % type).
             if ~obj.isOCO
                 s.type = obj.orderType;
             end
@@ -137,20 +138,40 @@ classdef Order < handle & matlab.mixin.SetGet
             % quantity
             if obj.quantity ~= 0
                 if isprop(obj,'isQuoteOrderQty') && obj.isQuoteOrderQty
+                    % Allow up to 8 digit precision
                     s.quoteOrderQty = sprintf('%.8f',obj.quantity);
+                    % Remove trailing zeros
+                    s.quoteOrderQty = strip(s.quoteOrderQty,'right','0');
+                    if s.quoteOrderQty(end) == '.'
+                        s.quoteOrderQty(end) = [];
+                    end
                 else
+                    % Allow up to 8 digit precision
                     s.quantity = sprintf('%.8f',obj.quantity);
+                    % Remove trailing zeros
+                    s.quantity = strip(s.quantity,'right','0');
+                    if s.quantity(end) == '.'
+                        s.quantity(end) = [];
+                    end
                 end
             end
             
             % Convert remaining price/quantity props to type char with 8 
             % digit precision in the new structure.
+            % Then remove trailing 0's (allows for lower precisions).
             params = {'price','stopPrice','icebergQty','stopLimitPrice',...
                 'limitIcebergQty','stopIcebergQty'};
             
             for ii = 1:numel(params)
                 if isprop(obj,params{ii}) && obj.(params{ii}) ~= 0
+                    % Allow up to 8 digit precision
                     s.(params{ii}) = sprintf('%.8f',obj.(params{ii}));
+                    
+                    % Remove trailing zeros
+                    s.(params{ii}) = strip(s.(params{ii}),'right','0');
+                    if s.(params{ii})(end) == '.'
+                        s.(params{ii})(end) = [];
+                    end
                 end
             end
             

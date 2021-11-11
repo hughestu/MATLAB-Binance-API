@@ -20,8 +20,7 @@ function [obj] = newOrder(orderType)
 %     base asset is on the left; hence with BTCUSDT, BTC is the asset being
 %     bought or sold.
 %   - Quantity is also conventionally specified in terms of the base asset.
-%   - At the time of writing, Binance listed all base asset precisions at 8.
-%     This function rounds all prices and quantities to 8 decimal places.
+%   - Orders allow up to 8 digits of precision for quantities and prices.
 %   - A list of available symbols and corresponding trade permissions for
 %     each symbol is available at:
 %      >> s = pub.exchangeInfo
