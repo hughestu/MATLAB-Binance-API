@@ -48,12 +48,12 @@ end
 QP = QueryParameter(s);                             % Q. params object
 queryString = QP.char;
 
-if exist('skey','var')
+if exist('skey','var') == 1
     signature = HMAC(skey,queryString);
     queryString = [queryString '&signature=' signature];  	% for hmac
 end
 
-if exist('akey','var')
+if exist('akey','var') == 1
     header = http.HeaderField('X-MBX-APIKEY',...
         akey,'Content-Type','application/x-www-form-urlencoded');
 else

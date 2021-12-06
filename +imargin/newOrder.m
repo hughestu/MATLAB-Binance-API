@@ -78,7 +78,7 @@ switch orderType
         obj = newMarginOrderObject.OCO(true);
 end
 
-assert(exist('obj','var'),...
+assert(exist('obj','var')==1,...
     'The input, orderType, did not match any available order types.')
 
 
