@@ -60,7 +60,7 @@ classdef Order < handle & matlab.mixin.SetGet
         function set.recvWindow(obj,recvWindow)
             assert(recvWindow<=60000 && recvWindow >=1,...
                 'recvWindow must be between 1 and 60000 milliseconds')
-            obj.recvWindow = 1000;
+            obj.recvWindow = recvWindow;
         end
         
         function endPoint = get.endPoint(obj)
