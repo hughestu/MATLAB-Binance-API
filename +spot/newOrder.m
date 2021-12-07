@@ -71,6 +71,7 @@ function [obj] = newOrder(orderType)
 %  >> s = obj.send;
 %
 % See also: <a href = "https://binance-docs.github.io/apidocs/spot/en/#new-order-trade">docs</a>
+%
 
 validateattributes(orderType,{'char'},{'row'})
 
