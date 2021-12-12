@@ -7,7 +7,7 @@ Suite of functions for accessing the [Binance API](https://binance-docs.github.i
 ##### v0.1.6
 
 #### Disclaimer:
-This repository is not affiliated, associated with, authorised by, endorsed by, or in any way officially connected with The Mathworks Inc. or Binance Holdings Ltd.
+This repository is not affiliated or in any way officially connected with The Mathworks Inc. or Binance Holdings Ltd.
 
 ### Features
 
